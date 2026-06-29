@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công Dân Số & An Toàn Mạng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* ===== ĐỒNG BỘ BIẾN MÀU & STYLE GIAO DIỆN TỪ CYBER.HTML ===== */
+        :root {
+            --blue-deep: #0f1f5c;
+            --blue-main: #1a3ecf;
+            --blue-mid: #3a6aff;
+            --cyan: #00c6f7;
+            --cyan-soft: #e0f7ff;
+            --green: #00d98b;
+            --yellow: #ffd60a;
+            --red-soft: #ff6b6b;
+            --surface: #f4f6ff;
+            --white: #ffffff;
+            --text-dark: #0d1640;
+            --text-mid: #3a4680;
+            --text-muted: #7b84b8;
+            --border: #dde3ff;
+            --shadow-card: 0 4px 24px rgba(26,62,207,0.10);
+            --shadow-hover: 0 12px 40px rgba(26,62,207,0.18);
+            --radius: 16px;
+            --radius-lg: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--surface);
+            color: var(--text-dark);
+            font-family: 'Be Vietnam Pro', sans-serif;
+            line-height: 1.85; 
+            padding-top: 68px; /* Chừa khoảng trống cho thanh điều hướng */
+        }
+
+        /* ===== THANH ĐIỀU HƯỚNG (NAVBAR) ĐỒNG BỘ ===== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; height: 68px;
+            box-shadow: 0 2px 20px rgba(26,62,207,0.08);
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 12px;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 1.35rem; color: var(--blue-main); text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, var(--blue-main), var(--cyan));
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: white;
+            box-shadow: 0 4px 15px rgba(26,62,207,0.3);
+        }
+
+        .nav-links { display: flex; gap: 0.35rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-mid); font-weight: 600;
+            font-size: 0.95rem; padding: 0.55rem 1.1rem; border-radius: 12px;
+            transition: all 0.25s ease;
+        }
+        .nav-links a:hover, .nav-links a.active-link { 
+            background: var(--cyan-soft); 
+            color: var(--blue-main); 
+        }
+
+        .btn-main-nav {
+            background: linear-gradient(135deg, var(--blue-main), var(--blue-mid)) !important;
+            color: var(--white) !important; padding: 0.55rem 1.4rem !important;
+            border-radius: 9999px !important; box-shadow: 0 4px 15px rgba(26,62,207,0.35);
+            font-weight: 700;
+        }
+        .btn-main-nav:hover { transform: translateY(-2px); }
+
+        /* ===== SẢNH CHÍNH (HERO BANNER) ĐỒNG BỘ ===== */
+        header {
+            padding: 6rem 2rem 5rem; text-align: center;
+            background: linear-gradient(160deg, var(--blue-deep) 0%, #1a3ecf 50%, #2f6bff 100%);
+            position: relative; overflow: hidden;
+        }
+        
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.95); font-size: 0.85rem; font-weight: 700;
+            padding: 0.5rem 1.2rem; border-radius: 9999px; margin: 0 auto 1.8rem;
+        }
+        
+        header h1 {
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800; color: white; line-height: 1.2; margin-bottom: 1.4rem; 
+        }
+        header h1 span { color: var(--cyan); }
+        
+        header p {
+            font-size: 1.15rem; color: rgba(255,255,255,0.9); max-width: 720px; margin: 0 auto;
+        }
+
+        .wave {
+            display: block; width: 100%; height: 60px; background: var(--surface);
+            clip-path: ellipse(60% 100% at 50% 100%); margin-top: -3px;
+        }
+
+        /* ===== KHU VỰC CHỨA NỘI DUNG ===== */
+        .container { max-width: 1000px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+        
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 10px; font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue-main);
+            background: rgba(26,62,207,0.1); padding: 0.45rem 1rem; border-radius: 9999px; margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4.5vw, 2.5rem);
+            font-weight: 800; color: var(--blue-deep); margin-bottom: 2.5rem;
+        }
+
+        /* Thẻ Card nội dung chính */
+        .card {
+            background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+            padding: 3rem; margin-bottom: 3rem; border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .sub-heading {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700;
+            color: var(--blue-main); margin: 2.5rem 0 1.2rem; padding-bottom: 0.5rem; 
+            border-bottom: 2px dashed var(--border);
+            display: flex; align-items: center; gap: 12px;
+        }
+        .sub-heading:first-of-type { margin-top: 0; }
+        
+        .paragraph-text { color: var(--text-dark); margin-bottom: 1.5rem; text-align: justify; }
+
+        /* ===== BỐ CỤC LỢI ÍCH & RỦI RO CHỮA THEO CYBER.HTML ===== */
+        .grid-two-col { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin-top: 2rem; 
+        }
+        
+        .box-feature {
+            background: var(--white); border-radius: var(--radius); padding: 2rem;
+            border: 1.5px solid var(--border); transition: all 0.3s;
+        }
+        .box-feature:hover { border-color: var(--cyan); }
+        .box-feature h4 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; }
+        
+        .box-feature.benefits h4 { color: var(--green); }
+        .box-feature.risks h4 { color: var(--red-soft); }
+
+        .checklist { list-style: none; }
+        .checklist li { position: relative; padding-left: 2rem; margin-bottom: 1rem; font-size: 0.98rem; color: var(--text-dark); }
+        .checklist li::before { position: absolute; left: 0; top: 0; font-weight: bold; font-size: 1.1rem; }
+        
+        .benefits li::before { content: '✓'; color: var(--green); }
+        .risks li::before { content: '✕'; color: var(--red-soft); }
+
+        /* ===== BỐ CỤC QUY TẮC ỨNG XỬ ===== */
+        .rules-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; 
+        }
+        .rule-card {
+            background: var(--surface); border-radius: var(--radius); padding: 1.8rem;
+            border: 1px solid var(--border); text-align: center; transition: all 0.3s;
+        }
+        .rule-card:hover { border-color: var(--blue-mid); transform: translateY(-4px); }
+        .rule-card i { font-size: 2rem; color: var(--blue-mid); margin-bottom: 1rem; }
+        .rule-card h5 { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; color: var(--blue-deep); margin-bottom: 0.6rem; }
+        .rule-card p { font-size: 0.95rem; color: var(--text-mid); }
+
+        /* ===== BỐ CỤC 10 KỸ NĂNG AN TOÀN SỐ ===== */
+        .steps-list { display: flex; flex-direction: column; gap: 1.5rem; margin-top: 2rem; }
+        .step {
+            display: flex; gap: 1.5rem; align-items: flex-start; padding: 1.8rem;
+            background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border);
+            transition: all 0.3s;
+        }
+        .step:hover { border-color: var(--blue-mid); box-shadow: var(--shadow-hover); }
+        
+        .step-num {
+            width: 44px; height: 44px; background: linear-gradient(135deg, var(--blue-main), var(--blue-mid));
+            color: white; font-weight: 800; font-size: 1.15rem; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(26,62,207,0.25);
+        }
+        .step-content strong { color: var(--blue-deep); font-size: 1.1rem; display: block; margin-bottom: 0.4rem; }
+        .step-content p { color: var(--text-mid); font-size: 0.98rem; }
+
+        /* ===== ĐỒNG BỘ KHU VỰC XEM VIDEO CHỐNG LỖI CẤU HÌNH TRÌNH PHÁT ===== */
+        .video-card {
+            background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+            padding: 3rem; margin-top: 3.5rem; border: 1px solid var(--border);
+        }
+        .video-container {
+            position: relative; width: 100%; padding-bottom: 56.25%; /* Định dạng chuẩn tỉ lệ khung hình 16:9 */
+            height: 0; overflow: hidden; border-radius: var(--radius);
+            margin-top: 1.5rem; box-shadow: 0 8px 30px rgba(15,31,92,0.15);
+        }
+        /* Sử dụng cấu trúc đường dẫn chuẩn /embed/ kết hợp tính năng thực thi mở rộng chống chặn */
+        .video-container iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;
+        }
+
+        footer { 
+            background: var(--blue-deep); color: rgba(255,255,255,0.6); text-align: center; 
+            padding: 3rem 1rem; font-size: 0.95rem; margin-top: 5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">
+            <div class="logo-icon"><i class="fas fa-shield-alt"></i></div>
+            CyberSafe THCS
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Trang Chủ</a></li>
+            <li><a href="#" class="active-link">🌐 Công Dân Số</a></li>
+            <li><a href="index.html">An Toàn Mạng</a></li>
+            <li><a href="index.html">Bạo Lực Mạng</a></li>
+            <li><a href="index.html">Lừa Đảo</a></li>
+            <li><a href="index.html">🎮 Trò Chơi</a></li>
+            <li><a href="index.html" class="btn-main-nav"> Quay lại Sảnh chính</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <div class="hero-badge"><i class="fas fa-globe"></i> Chuyên Đề Học Tập Số 01</div>
+        <h1>Không Gian Mạng & <span>Công Dân Số</span></h1>
+        <p>Tìm hiểu các khái niệm nền tảng về công nghệ, nhận diện lợi ích, rủi ro và trang bị 10 kỹ năng sinh tồn cốt lõi trên môi trường Internet.</p>
+    </header>
+    <div class="wave"></div>
+
+    <div class="container">
+
+        <section id="chuong-1">
+            <div class="section-eyebrow">Chương 1</div>
+            <h2 class="section-title">Công Dân Số Là Ai?</h2>
+            
+            <div class="card">
+                <h3 class="sub-heading"><i class="fas fa-network-wired"></i> 1. Công nghệ số là gì?</h3>
+                <p class="paragraph-text"><strong>Công nghệ số (Digital Technology)</strong> là việc sử dụng tín hiệu số (hệ nhị phân 0 và 1) để xử lý, lưu trữ, truyền tải thông tin. Các thiết bị như điện thoại thông minh, máy tính, hệ thống lưu trữ đám mây và mạng Internet chính là những sản phẩm cốt lõi của công nghệ số, giúp tối ưu hóa hiệu suất làm việc và kết nối con người toàn cầu.</p>
+
+                <h3 class="sub-heading"><i class="fas fa-user-shield"></i> 2. Công dân số là gì?</h3>
+                <p class="paragraph-text"><strong>Công dân số (Digital Citizen)</strong> là người có khả năng truy cập các nguồn công nghệ thông tin để giao tiếp, làm việc, giải trí một cách chủ động, an toàn và có trách nhiệm. Một công dân số không chỉ biết sử dụng thiết bị công nghệ mà còn hiểu rõ và tuân thủ các chuẩn mực đạo đức, pháp luật trên môi trường số.</p>
+            </div>
+
+            <div class="card">
+                <h3 class="sub-heading"><i class="fas fa-chart-pie"></i> 3. Lợi ích và rủi ro của Internet</h3>
+                <div class="grid-two-col">
+                    <div class="box-feature benefits">
+                        <h4><i class="fas fa-check-circle"></i> Lợi ích của Internet</h4>
+                        <ul class="checklist">
+                            <li>Mở rộng kho tàng kiến thức, hỗ trợ học tập và tra cứu thông tin nhanh chóng.</li>
+                            <li>Kết nối, giữ liên lạc với gia đình, bạn bè xuyên biên giới.</li>
+                            <li>Cung cấp các nền tảng giải trí đa dạng (phim ảnh, âm nhạc, trò chơi).</li>
+                            <li>Tạo cơ hội kinh doanh, làm việc trực tuyến tiện lợi.</li>
+                        </ul>
+                    </div>
+                    <div class="box-feature risks">
+                        <h4><i class="fas fa-times-circle"></i> Rủi ro từ Internet</h4>
+                        <ul class="checklist">
+                            <li>Nguy cơ bị lừa đảo tài chính, đánh cắp thông tin cá nhân.</li>
+                            <li>Tiếp cận với các nội dung độc hại, bạo lực hoặc tin giả (fake news).</li>
+                            <li>Nguy cơ bị bắt nạt trên mạng (cyberbullying).</li>
+                            <li>Gây nghiện Internet, làm giảm tương tác trực tiếp ngoài đời thực và ảnh hưởng sức khỏe.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="sub-heading"><i class="fas fa-users"></i> 4. Những quy tắc ứng xử trên không gian mạng</h3>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <i class="fas fa-heart"></i>
+                        <h5>Tôn trọng</h5>
+                        <p>Trách nhiệm lời nói, không xúc phạm, bôi nhọ hay công kích người khác.</p>
+                    </div>
+                    <div class="rule-card">
+                        <i class="fas fa-fingerprint"></i>
+                        <h5>Trách nhiệm</h5>
+                        <p>Xác thực kỹ thông tin trước khi nhấn nút chia sẻ; không lan truyền tin đồn thất thiệt.</p>
+                    </div>
+                    <div class="rule-card">
+                        <i class="fas fa-gavel"></i>
+                        <h5>Văn minh</h5>
+                        <p>Sử dụng ngôn từ lịch sự, phù hợp với thuần phong mỹ tục.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="chuong-3" style="margin-top: 3.5rem;">
+            <div class="section-eyebrow">Chương 3</div>
+            <h2 class="section-title">10 Kỹ Năng An Toàn Số Cốt Lõi</h2>
+            
+            <div class="card">
+                <p class="paragraph-text" style="color: var(--text-mid); font-weight: 500;">Để bảo vệ bản thân an toàn và trở thành một chiến binh công nghệ thông thái, hãy ghi nhớ và thực hành nhuần nhuyễn 10 kỹ năng cốt lõi sau:</p>
+
+                <div class="steps-list">
+                    <div class="step">
+                        <div class="step-num">01</div>
+                        <div class="step-content">
+                            <strong>Tạo mật khẩu mạnh</strong>
+                            <p>Đặt mật khẩu có độ dài từ 8 ký tự trở lên, bao gồm cả chữ hoa, chữ thường, số và ký tự đặc biệt (ví dụ: @, #, !). Tránh dùng ngày sinh hay tên riêng dễ đoán.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">02</div>
+                        <div class="step-content">
+                            <strong>Bật xác thực hai lớp (2FA)</strong>
+                            <p>Kích hoạt tính năng bảo mật kép qua số điện thoại hoặc ứng dụng xác thực (Google Authenticator) để bảo vệ tài khoản ngay cả khi lộ mật khẩu.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">03</div>
+                        <div class="step-content">
+                            <strong>Không chia sẻ OTP</strong>
+                            <p>Mã xác thực một lần (OTP) là chìa khóa tối mật của tài khoản ngân hàng và mạng xã hội. Tuyệt đối không cung cấp cho bất kỳ ai, kể cả người tự xưng là nhân viên ngân hàng hay cơ quan chức năng.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">04</div>
+                        <div class="step-content">
+                            <strong>Không nhấp vào liên kết lạ</strong>
+                            <p>Cảnh giác trước các đường link gửi qua tin nhắn SMS, Email, Messenger từ người lạ hoặc các ưu đãi trúng thưởng "quá hời" để tránh bị cài cắm mã độc, virus hoặc trang web giả mạo.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">05</div>
+                        <div class="step-content">
+                            <strong>Kiểm chứng thông tin trước khi chia sẻ</strong>
+                            <p>Luôn tự đặt câu hỏi về nguồn gốc thông tin. Chỉ tin tưởng và chia sẻ các thông tin từ các trang báo chí chính thống hoặc cơ quan có thẩm quyền.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">06</div>
+                        <div class="step-content">
+                            <strong>Cài đặt quyền riêng tư</strong>
+                            <p>Định cấu hình tài khoản cá nhân (Facebook, Zalo, Tiktok...) ở chế độ bạn bè hoặc riêng tư. Hạn chế để người lạ xem số điện thoại, địa chỉ hoặc hình ảnh cá nhân.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">07</div>
+                        <div class="step-content">
+                            <strong>Báo cáo tài khoản xấu</strong>
+                            <p>Tích cực sử dụng tính năng "Báo cáo" (Report) đối với các tài khoản có hành vi lừa đảo, giả mạo, hoặc phát tán nội dung độc hại để chung tay làm sạch không gian mạng.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">08</div>
+                        <div class="step-content">
+                            <strong>Bảo vệ dữ liệu cá nhân</strong>
+                            <p>Không tự ý công khai thông tin căn cước công dân, hộ chiếu, vé máy bay, số tài khoản lên mạng xã hội.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">09</div>
+                        <div class="step-content">
+                            <strong>Quản lý thời gian sử dụng Internet</strong>
+                            <p>Đặt ra giới hạn thời gian online hợp lý trong ngày để cân bằng giữa cuộc sống số với việc học tập, làm việc và các hoạt động thể chất ngoài đời thực.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">10</div>
+                        <div class="step-content">
+                            <strong>Tìm kiếm sự hỗ trợ khi gặp sự cố</strong>
+                            <p>Nếu vô tình bị hack tài khoản, bị lừa đảo tiền bạc hoặc bị bắt nạt trên mạng, hãy lập tức liên hệ với người thân có kinh nghiệm, quản trị viên nền tảng hoặc trình báo các cơ quan chức năng để được hỗ trợ giải quyết kịp thời.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="video-container">
+    <video width="100%" height="100%" controls>
+        <source src="data:video/mp4;base64,ĐOẠN_MÃ_DÀI_NGOẰNG_BẠN_VỪA_COPY" type="video/mp4">
+        Trình duyệt của bạn không hỗ trợ thẻ video.
+    </video>
+</div>
+
+    </div>
+
+    <footer>
+        <strong>CyberSafe THCS</strong> · Hệ thống Tài liệu số cho Học sinh THCS Việt Nam © 2026
+    </footer>
+
+</body>
+</html>

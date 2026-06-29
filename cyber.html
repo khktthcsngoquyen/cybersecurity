@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cẩm Nang An Toàn Số THCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --blue-deep: #0f1f5c;
+            --blue-main: #1a3ecf;
+            --blue-mid: #3a6aff;
+            --cyan: #00c6f7;
+            --cyan-soft: #e0f7ff;
+            --green: #00d98b;
+            --yellow: #ffd60a;
+            --red-soft: #ff6b6b;
+            --surface: #f4f6ff;
+            --white: #ffffff;
+            --text-dark: #0d1640;
+            --text-mid: #3a4680;
+            --text-muted: #7b84b8;
+            --border: #dde3ff;
+            --shadow-card: 0 4px 24px rgba(26,62,207,0.10);
+            --shadow-hover: 0 12px 40px rgba(26,62,207,0.18);
+            --radius: 16px;
+            --radius-lg: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--surface);
+            color: var(--text-dark);
+            font-family: 'Be Vietnam Pro', sans-serif;
+            line-height: 1.85; 
+            padding-top: 68px; 
+        }
+
+        /* ===== SPA PAGE VIEW LOGIC ===== */
+        .page-view {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .page-view.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== NAVBAR ===== */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5%; height: 68px;
+            box-shadow: 0 2px 20px rgba(26,62,207,0.08);
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 12px;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+            font-size: 1.35rem; color: var(--blue-main); cursor: pointer;
+            transition: all 0.3s;
+        }
+        .logo:hover { transform: scale(1.05); }
+
+        .logo-icon {
+            width: 42px; height: 42px;
+            background: linear-gradient(135deg, var(--blue-main), var(--cyan));
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 15px rgba(26,62,207,0.3);
+        }
+
+        .nav-links { display: flex; gap: 0.35rem; list-style: none; align-items: center; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-mid); font-weight: 600;
+            font-size: 0.95rem; padding: 0.55rem 1.1rem; border-radius: 12px;
+            transition: all 0.25s ease; cursor: pointer;
+            position: relative;
+        }
+        .nav-links a:hover, .nav-links a.active-link { 
+            background: var(--cyan-soft); 
+            color: var(--blue-main); 
+            transform: translateY(-2px);
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -2px; left: 50%;
+            width: 0; height: 2px; background: var(--blue-mid);
+            transition: all 0.3s; transform: translateX(-50%);
+        }
+        .nav-links a:hover::after, .nav-links a.active-link::after { width: 60%; }
+
+        .btn-survey-nav {
+            background: linear-gradient(135deg, var(--blue-main), var(--blue-mid)) !important;
+            color: var(--white) !important; padding: 0.55rem 1.4rem !important;
+            border-radius: 9999px !important; box-shadow: 0 4px 15px rgba(26,62,207,0.35);
+            font-weight: 700;
+        }
+        .btn-survey-nav:hover { 
+            transform: translateY(-3px) scale(1.03); 
+            box-shadow: 0 8px 25px rgba(26,62,207,0.4);
+        }
+
+        /* ===== HERO ===== */
+        header {
+            padding: 7rem 2rem 5rem; text-align: center;
+            background: linear-gradient(160deg, var(--blue-deep) 0%, #1a3ecf 50%, #2f6bff 100%);
+            position: relative; overflow: hidden;
+            min-height: calc(100vh - 68px); 
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        header::before {
+            content: ''; position: absolute; top: -120px; right: -120px;
+            width: 580px; height: 580px;
+            background: radial-gradient(circle, rgba(0,198,247,0.3) 0%, transparent 65%); border-radius: 50%;
+            animation: float 25s ease-in-out infinite;
+        }
+        header::after {
+            content: ''; position: absolute; bottom: -100px; left: -100px;
+            width: 480px; height: 480px;
+            background: radial-gradient(circle, rgba(0,217,139,0.22) 0%, transparent 70%); border-radius: 50%;
+            animation: float 30s ease-in-out infinite reverse;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(30px); }
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.95); font-size: 0.85rem; font-weight: 700;
+            padding: 0.5rem 1.2rem; border-radius: 9999px; margin: 0 auto 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 800; color: white; line-height: 1.1; margin-bottom: 1.4rem; 
+            position: relative; z-index: 1;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        header h1 span { 
+            color: var(--cyan); 
+            position: relative;
+        }
+        header h1 span::after {
+            content: '🛡️'; position: absolute; font-size: 0.6em; top: -0.4em; right: -0.6em;
+        }
+        header p {
+            font-size: 1.2rem; color: rgba(255,255,255,0.9); max-width: 720px;
+            margin: 0 auto 2.8rem; position: relative; z-index: 1;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 12px; background: white;
+            color: var(--blue-main); font-weight: 700; font-size: 1.1rem;
+            padding: 1.1rem 2.8rem; border-radius: 9999px; text-decoration: none;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.25); transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative; z-index: 1; cursor: pointer; margin: 0 auto;
+        }
+        .hero-cta:hover { 
+            transform: translateY(-6px) scale(1.05); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .wave {
+            display: block; width: 100%; height: 80px; background: var(--surface);
+            clip-path: ellipse(60% 100% at 50% 100%); margin-top: -3px;
+        }
+
+        /* ===== CONTAINER & CARDS ===== */
+        .container { max-width: 980px; margin: 0 auto; padding: 3rem 1.5rem 7rem; }
+        section { margin-bottom: 4rem; }
+        
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 10px; font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase; color: var(--blue-main);
+            background: rgba(26,62,207,0.1); padding: 0.45rem 1rem; border-radius: 9999px; margin-bottom: 1rem;
+        }
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.9rem, 4.5vw, 2.6rem);
+            font-weight: 800; color: var(--blue-deep); margin-bottom: 2.2rem; line-height: 1.15;
+        }
+
+        .card {
+            background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-card);
+            padding: 3.2rem; margin-bottom: 3rem; border: 1px solid var(--border);
+            transition: all 0.4s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .sub-heading {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.45rem; font-weight: 700;
+            color: var(--blue-main); margin: 3.2rem 0 1.4rem; padding-bottom: 0.6rem; 
+            border-bottom: 3px dashed var(--border);
+            display: flex; align-items: center; gap: 12px;
+        }
+        
+        .intro-text { color: var(--text-mid); font-size: 1.12rem; margin-bottom: 1.6rem; font-weight: 500;}
+        .paragraph-text { color: var(--text-dark); margin-bottom: 1.6rem; text-align: justify; }
+
+        .example-box, .story-box {
+            padding: 1.8rem; border-radius: 0 16px 16px 0; margin: 2.2rem 0; font-size: 0.97rem;
+        }
+        .example-box {
+            background: rgba(255,214,10,0.09); border-left: 5px solid var(--yellow);
+        }
+        .example-box strong { color: #b38600; display: block; margin-bottom: 0.6rem; font-size: 1.1rem;}
+        .story-box {
+            background: #fff4f4; border-left: 5px solid var(--red-soft);
+            box-shadow: inset 0 0 25px rgba(255, 107, 107, 0.06);
+        }
+        .story-box strong { color: #c0392b; display: block; margin-bottom: 0.6rem; font-size: 1.1rem;}
+
+        .info-box {
+            background: var(--cyan-soft); border: 1px solid rgba(0,198,247,0.35);
+            padding: 1.8rem; border-radius: var(--radius); margin: 2.5rem 0;
+        }
+
+        .checklist { list-style: none; margin-top: 1.2rem; }
+        .checklist li {
+            position: relative; padding-left: 2.4rem; margin-bottom: 1.1rem; color: var(--text-dark); font-size: 1.02rem;
+        }
+        .checklist li::before { 
+            content: '✅'; position: absolute; left: 0; top: 2px; font-size: 1.3rem;
+            filter: drop-shadow(0 2px 3px rgba(0,217,139,0.3));
+        }
+
+        /* ===== RULES GRID ===== */
+        .rules-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.8rem; margin-top: 2rem; 
+        }
+        
+        .rule-card {
+            background: var(--white); border-radius: var(--radius); padding: 1.8rem;
+            border: 1.5px solid var(--border); display: flex; flex-direction: column; gap: 1.2rem; 
+            align-items: flex-start; transition: all 0.3s;
+        }
+        .rule-card:hover {
+            border-color: var(--cyan);
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(0,198,247,0.15);
+        }
+        .rule-icon {
+            width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.8rem; flex-shrink: 0;
+            transition: transform 0.3s;
+        }
+        .rule-card:hover .rule-icon { transform: scale(1.15) rotate(8deg); }
+
+        .rule-icon.blue { background: rgba(26,62,207,0.1); }
+        .rule-icon.cyan { background: rgba(0,198,247,0.12); }
+        .rule-icon.green { background: rgba(0,217,139,0.12); }
+        .rule-icon.yellow { background: rgba(255,214,10,0.15); }
+        .rule-icon.red { background: rgba(255,107,107,0.15); }
+        .rule-icon.purple { background: rgba(155, 89, 182, 0.15); }
+        .rule-icon.orange { background: rgba(230, 126, 34, 0.15); }
+        .rule-icon.teal { background: rgba(26, 188, 156, 0.15); }
+
+        .rule-card h4 { font-weight: 700; color: var(--blue-deep); margin-bottom: 0.6rem; font-size: 1.15rem; }
+        .rule-card p { font-size: 0.97rem; color: var(--text-mid); line-height: 1.65; margin: 0;}
+
+        /* ===== STEPS ===== */
+        .steps-list { display: flex; flex-direction: column; gap: 1.6rem; margin-top: 2.2rem; }
+        .step {
+            display: flex; gap: 1.8rem; align-items: flex-start; padding: 1.8rem;
+            background: var(--white); border-radius: var(--radius); border: 1.5px solid var(--border);
+            transition: all 0.3s;
+        }
+        .step:hover { border-color: var(--blue-mid); box-shadow: var(--shadow-hover); }
+
+        .step-num {
+            width: 48px; height: 48px; background: linear-gradient(135deg, var(--blue-main), var(--blue-mid));
+            color: white; font-weight: 800; font-size: 1.2rem; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(26,62,207,0.3);
+        }
+
+        /* ===== SCAM CARDS ===== */
+        .scam-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.8rem; margin-top: 2.2rem; 
+        }
+        .scam-card {
+            background: var(--white); border-radius: var(--radius); padding: 2rem;
+            border: 1px solid var(--border); border-left: 6px solid; transition: all 0.3s;
+        }
+        .scam-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .scam-card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1.2rem; flex-wrap: wrap; }
+        .scam-tag {
+            font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+            padding: 0.35rem 0.9rem; border-radius: 9999px;
+        }
+
+        .scam-card h4 { font-weight: 700; color: var(--blue-deep); font-size: 1.25rem; margin-bottom: 0.8rem; }
+        .scam-card p { font-size: 1rem; color: var(--text-dark); margin-bottom: 1.2rem; line-height: 1.65;}
+        
+        .scam-tip {
+            display: inline-flex; align-items: flex-start; gap: 10px;
+            background: rgba(0,217,139,0.12); color: #007a50; font-size: 0.93rem; font-weight: 600;
+            padding: 0.75rem 1.2rem; border-radius: 14px; margin-top: 0.8rem;
+        }
+
+        /* ===== PROGRESS NAV ===== */
+        .progress-nav {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            border-radius: 9999px;
+            padding: 12px 8px;
+            box-shadow: var(--shadow-card);
+            z-index: 900;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+        }
+        @media (min-width: 1024px) {
+            .progress-nav { display: flex; }
+        }
+        .progress-dot {
+            width: 14px; height: 14px;
+            background: var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .progress-dot.active {
+            background: var(--blue-main);
+            transform: scale(1.4);
+            box-shadow: 0 0 0 4px rgba(26,62,207,0.2);
+        }
+
+        /* ===== SURVEY STYLES ===== */
+        .survey-container { background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; }
+        .survey-header-bar { 
+            background: linear-gradient(135deg, var(--blue-deep), var(--blue-main)); 
+            padding: 3rem 2rem; text-align: center; 
+        }
+        .survey-header-bar h2 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 800; color: white; }
+        .survey-body { padding: 3rem; }
+        .instructions { background: var(--cyan-soft); border: 1.5px solid rgba(0,198,247,0.3); border-radius: var(--radius); padding: 1.8rem; margin-bottom: 2.5rem; font-size: 0.97rem; color: var(--text-mid); }
+        .survey-section-title { 
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--blue-main); 
+            padding: 0.6rem 0; border-bottom: 3px solid var(--border); margin: 2.5rem 0 1.6rem; 
+            display: flex; align-items: center; gap: 12px;
+        }
+        .form-group { margin-bottom: 2rem; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 0.8rem; font-size: 1.02rem; color: var(--text-dark);}
+        .radio-group { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+        .radio-group label { 
+            display: flex; align-items: center; gap: 10px; font-weight: 500; cursor: pointer; 
+            background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; 
+            padding: 0.75rem 1.4rem; font-size: 0.97rem; transition: all 0.2s;
+        }
+        .radio-group label:hover { border-color: var(--cyan); }
+
+        .likert-wrapper { overflow-x: auto; }
+        .likert-table { 
+            width: 100%; border-collapse: collapse; margin-bottom: 3rem; border-radius: var(--radius); 
+            overflow: hidden; border: 1px solid var(--border); min-width: 680px; 
+        }
+        .likert-table th { 
+            background: linear-gradient(90deg, var(--blue-main), var(--blue-mid)); 
+            color: white; padding: 16px; text-align: center; font-size: 0.92rem; 
+        }
+        .likert-table td { padding: 14px; text-align: center; border-bottom: 1px solid var(--border); }
+        .likert-table tr:hover { background-color: var(--cyan-soft); }
+        .likert-table td:first-child { text-align: left; font-weight: 500; width: 52%; }
+
+        textarea { 
+            width: 100%; padding: 1.2rem; border: 1.5px solid var(--border); 
+            border-radius: var(--radius); background: var(--surface); min-height: 140px; 
+            font-family: inherit; resize: vertical; font-size: 1.02rem;
+        }
+        .submit-btn { 
+            background: linear-gradient(135deg, var(--blue-main), var(--blue-mid)); color: white; border: none; 
+            padding: 1.1rem 3.2rem; font-size: 1.15rem; font-weight: 700; border-radius: 9999px; 
+            cursor: pointer; margin: 3.5rem auto 0; display: block; 
+            box-shadow: 0 8px 25px rgba(26,62,207,0.35); transition: all 0.4s;
+        }
+        .submit-btn:hover { 
+            transform: translateY(-4px); 
+            box-shadow: 0 15px 35px rgba(26,62,207,0.45); 
+        }
+
+        /* ===== GAME UI STYLES ===== */
+        .game-wrapper {
+            background: linear-gradient(135deg, #1a2a6c, #11998e, #38ef7d);
+            border-radius: var(--radius-lg);
+            padding: 3rem 2rem;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .game-panel {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--text-dark);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 2;
+        }
+        .game-screen { display: none; }
+        .game-screen.active { display: block; animation: fadeIn 0.4s ease forwards; }
+
+        .game-timer-container {
+            width: 100%; height: 10px; background: var(--border); border-radius: 5px; margin-bottom: 1.5rem; overflow: hidden;
+        }
+        .game-timer-bar {
+            height: 100%; width: 100%; background: var(--red-soft); transition: width 1s linear, background-color 0.3s;
+        }
+        .timer-text { font-size: 2rem; font-weight: 800; color: var(--red-soft); font-family: 'Space Grotesk', sans-serif; margin-bottom: 1rem;}
+
+        .game-context { font-size: 1rem; color: var(--text-mid); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .game-situation { font-size: 1.4rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 2.5rem; line-height: 1.5;}
+        
+        .game-btn-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;}
+        .btn-game {
+            flex: 1; min-width: 140px; padding: 1.2rem; font-size: 1.2rem; font-weight: 800; font-family: inherit;
+            border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: white;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        .btn-game.scam { background: var(--red-soft); }
+        .btn-game.scam:hover { background: #ff4d4d; transform: translateY(-4px); }
+        .btn-game.real { background: var(--green); }
+        .btn-game.real:hover { background: #00bf7a; transform: translateY(-4px); }
+        
+        .score-display { font-size: 1.2rem; font-weight: 700; color: var(--blue-main); margin-bottom: 1rem; }
+        
+        /* ===== POPUP ===== */
+        .survey-popup {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: white;
+            padding: 1.5rem; 
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(26,62,207,0.2);
+            width: 300px; 
+            z-index: 2000;
+            border: 1px solid var(--border);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(40px) scale(0.9);
+            pointer-events: none; 
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .survey-popup.show { 
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .popup-icon { font-size: 2.4rem; margin-bottom: 0.6rem; }
+        .popup-title { font-weight: 800; color: var(--blue-deep); margin-bottom: 0.6rem; font-size: 1.1rem; font-family: 'Space Grotesk', sans-serif; }
+        .survey-popup p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.55; margin-bottom: 1.4rem; }
+        .popup-actions { display: flex; gap: 10px; }
+        
+        .btn-accept { 
+            background: linear-gradient(135deg, var(--blue-main), var(--blue-mid)); color: white; border: none; 
+            padding: 0.75rem; border-radius: 12px; cursor: pointer; flex: 1; font-weight: 700; 
+            font-size: 0.9rem; font-family: inherit; transition: all 0.3s; 
+        }
+        .btn-accept:hover { opacity: 0.95; transform: translateY(-3px); }
+        
+        .btn-deny { 
+            background: var(--surface); color: var(--text-muted); border: 1.5px solid var(--border); 
+            padding: 0.75rem; border-radius: 12px; cursor: pointer; font-size: 0.9rem; font-weight: 600; 
+            font-family: inherit; transition: all 0.3s; 
+        }
+        .btn-deny:hover { background: var(--border); transform: translateY(-2px); }
+
+        /* ===== TOOL BOXES (INTERACTIVE) ===== */
+        .interactive-tool-box { background: var(--white); border: 2px solid var(--border); border-radius: var(--radius); padding: 1.8rem; margin: 2rem 0; text-align: center; }
+        .interactive-tool-box h4 { color: var(--blue-deep); margin-bottom: 1rem; font-size: 1.2rem; font-weight: 700; }
+        
+        /* PASSWORD CHECKER */
+        .pwd-input-wrap { position: relative; max-width: 400px; margin: 0 auto 1rem; }
+        .pwd-input-wrap input { width: 100%; padding: 1rem; padding-right: 3rem; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1.1rem; font-family: inherit; outline: none; transition: all 0.3s; }
+        .pwd-input-wrap input:focus { border-color: var(--blue-main); }
+        .pwd-input-wrap .toggle-eye { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1.2rem; }
+        .pwd-meter-bg { max-width: 400px; margin: 0 auto 0.8rem; height: 8px; background: var(--surface); border-radius: 4px; overflow: hidden; }
+        .pwd-meter { height: 100%; width: 0%; background: var(--red-soft); transition: width 0.3s, background-color 0.3s; }
+        .pwd-feedback { font-weight: 700; font-size: 1.1rem; }
+
+        /* TOXIC FILTER / SCAM SCANNER */
+        .textarea-wrap { width: 100%; max-width: 600px; margin: 0 auto 1rem; }
+        .textarea-wrap textarea { width: 100%; padding: 1rem; border: 1.5px solid var(--border); border-radius: 12px; font-size: 1rem; font-family: inherit; outline: none; transition: all 0.3s; resize: vertical; min-height: 100px;}
+        .textarea-wrap textarea:focus { border-color: var(--blue-main); }
+        .btn-action-tool { background: linear-gradient(135deg, var(--blue-main), var(--cyan)); color: white; border: none; padding: 0.8rem 2rem; border-radius: 12px; font-weight: 700; font-size: 1.05rem; cursor: pointer; transition: transform 0.3s; font-family: inherit;}
+        .btn-action-tool:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(26,62,207,0.3); }
+        .result-box { margin: 1.5rem auto 0; max-width: 600px; padding: 1rem; border-radius: 12px; background: var(--surface); text-align: left; display: none; border: 1px solid var(--border);}
+        .result-box.active { display: block; animation: fadeIn 0.4s; }
+        
+        /* ===== CHAT SIMULATOR (MINI-GAME) ===== */
+        .chat-sim-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin: 2.5rem 0; }
+        .chat-sim-header { background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 1.2rem; text-align: center; font-weight: 700; font-family: 'Space Grotesk', sans-serif; display: flex; justify-content: space-between; align-items: center;}
+        .chat-sim-body { padding: 1.5rem; min-height: 250px; display: flex; flex-direction: column; gap: 1rem; background: #e5ddd5; }
+        .msg-bubble { max-width: 80%; padding: 0.8rem 1.2rem; border-radius: 16px; font-size: 0.95rem; line-height: 1.5; position: relative; animation: fadeIn 0.3s; }
+        .msg-scammer { background: white; align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .msg-user { background: #dcf8c6; align-self: flex-end; border-bottom-right-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .msg-system { background: rgba(0,0,0,0.6); color: white; align-self: center; font-size: 0.85rem; padding: 0.5rem 1rem; border-radius: 12px; text-align: center; }
+        .chat-sim-actions { padding: 1.5rem; background: white; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.8rem; }
+        .btn-chat-opt { background: var(--surface); border: 1.5px solid var(--border); padding: 1rem; border-radius: 12px; font-family: inherit; font-size: 0.95rem; cursor: pointer; text-align: left; transition: all 0.2s; font-weight: 500;}
+        .btn-chat-opt:hover { border-color: var(--blue-main); background: var(--cyan-soft); }
+
+        /* ===== AI CHATBOT (POLLINATIONS) ===== */
+        .ai-bot-wrapper { position: fixed; bottom: 30px; left: 30px; z-index: 2000; }
+        .btn-ai-toggle { background: linear-gradient(135deg, var(--blue-deep), var(--blue-main)); color: white; border: none; padding: 1rem 1.5rem; border-radius: 9999px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; cursor: pointer; box-shadow: 0 10px 25px rgba(26,62,207,0.3); transition: transform 0.3s; display: flex; align-items: center; gap: 10px; }
+        .btn-ai-toggle:hover { transform: scale(1.05); }
+        .ai-chat-window { position: absolute; bottom: 70px; left: 0; width: 350px; background: white; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); overflow: hidden; display: none; flex-direction: column; border: 1px solid var(--border); animation: fadeIn 0.3s ease; }
+        .ai-chat-window.show { display: flex; }
+        .ai-chat-header { background: var(--blue-main); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
+        .ai-chat-header span { cursor: pointer; font-size: 1.2rem; }
+        .ai-chat-messages { height: 350px; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; background: var(--surface); }
+        .ai-msg { max-width: 85%; padding: 0.8rem 1rem; border-radius: 16px; font-size: 0.95rem; line-height: 1.5; }
+        .ai-msg.bot { background: white; border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .ai-msg.user { background: var(--blue-main); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .ai-chat-input-area { padding: 1rem; background: white; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+        .ai-chat-input-area input { flex: 1; padding: 0.8rem; border: 1px solid var(--border); border-radius: 12px; font-family: inherit; outline: none; }
+        .ai-chat-input-area button { background: var(--blue-main); color: white; border: none; padding: 0 1.2rem; border-radius: 12px; cursor: pointer; font-weight: 700; }
+
+        footer { 
+            background: var(--blue-deep); color: rgba(255,255,255,0.6); text-align: center; 
+            padding: 3rem 1rem; font-size: 0.95rem; 
+        }
+        footer a { color: var(--cyan); text-decoration: none; }
+
+        @media (max-width: 768px) { 
+            .nav-links { display: none; } 
+            .survey-body { padding: 1.8rem; } 
+            .survey-popup { width: calc(100% - 40px); right: 20px; bottom: 20px; }
+            .ai-bot-wrapper { left: 20px; bottom: 20px; }
+            .ai-chat-window { width: calc(100vw - 40px); }
+            .card { padding: 2rem; }
+            .progress-nav { display: none; }
+        }
+        /* Cải thiện thêm */
+            .interactive-tool-box {
+                transition: all 0.4s ease;
+            }
+            .interactive-tool-box:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--shadow-hover);
+            }
+            .result-box {
+                animation: fadeIn 0.5s ease;
+            }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo" onclick="switchPage('home')">
+            <div class="logo-icon">🛡️</div>
+            CyberSafe THCS
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="switchPage('home')">Trang Chủ</a></li>
+            <li><a onclick="switchPage('an-toan-mang')">An Toàn Mạng</a></li>
+            <li><a onclick="switchPage('bao-luc-mang')">Bạo Lực Mạng</a></li>
+            <li><a onclick="switchPage('lua-dao')">Lừa Đảo</a></li>
+            <li><a onclick="switchPage('tro-choi')">🎮 Trò Chơi</a></li>
+            <li><a onclick="switchPage('khao-sat')" class="btn-survey-nav">📝 Khảo Sát</a></li>
+        </ul>
+    </nav>
+
+    <div class="progress-nav" id="progressNav">
+        <div class="progress-dot active" onclick="switchPage('home')" title="Trang chủ"></div>
+        <div class="progress-dot" onclick="switchPage('an-toan-mang')" title="An toàn mạng"></div>
+        <div class="progress-dot" onclick="switchPage('bao-luc-mang')" title="Bạo lực mạng"></div>
+        <div class="progress-dot" onclick="switchPage('lua-dao')" title="Lừa đảo"></div>
+        <div class="progress-dot" onclick="switchPage('tro-choi')" title="Trò chơi"></div>
+        <div class="progress-dot" onclick="switchPage('khao-sat')" title="Khảo sát"></div>
+    </div>
+
+    <div class="ai-bot-wrapper">
+        <button class="btn-ai-toggle" onclick="toggleAiChat()"><i class="fas fa-robot"></i> Hỏi AI</button>
+        <div class="ai-chat-window" id="ai-chat-window">
+            <div class="ai-chat-header">
+                CyberSafe Assistant
+                <span onclick="toggleAiChat()">&times;</span>
+            </div>
+            <div class="ai-chat-messages" id="ai-chat-messages">
+                <div class="ai-msg bot">Xin chào! Mình là trợ lý ảo AI. Bạn có thắc mắc gì về bảo mật, lừa đảo hay bạo lực mạng không?</div>
+            </div>
+            <div class="ai-chat-input-area">
+                <input type="text" id="ai-input" placeholder="Nhập câu hỏi..." onkeypress="handleAiKeyPress(event)">
+                <button onclick="sendAiMessage()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="home" class="page-view active">
+        <header>
+            <div class="hero-badge"><i class="fas fa-shield-alt"></i> Cẩm Nang Kỹ Năng Sinh Tồn Thời Đại Số · 2025</div>
+            <h1>Trở Thành <span>Hiệp Sĩ</span><br>Không Gian Mạng</h1>
+            <p>Internet không chỉ có game, nhạc hay những đoạn video hài hước. Nó còn chứa đựng vô số cạm bẫy tàng hình. Hành trang kiến thức số này được thiết kế chi tiết để giúp bạn và bạn bè tự bảo vệ mình trước mọi rủi ro.</p>
+            <a onclick="switchPage('an-toan-mang')" class="hero-cta"><i class="fas fa-rocket"></i> Bắt đầu khóa huấn luyện</a>
+        </header>
+        <div class="wave"></div>
+        <div class="container" style="text-align: center;">
+            <h2 class="section-title">Tại sao bạn cần đọc cẩm nang này?</h2>
+            <p class="paragraph-text" style="text-align: center; max-width: 700px; margin: 0 auto;">Theo các thống kê gần đây, hơn 70% học sinh cấp 2 từng đối mặt với ít nhất một rủi ro trên không gian mạng: từ việc bị đánh cắp tài khoản game, bị lừa nạp thẻ điện thoại, cho đến việc trở thành nạn nhân của những lời miệt thị ẩn danh. Đừng để đến khi "mất bò mới lo làm chuồng". Kéo xuống, chọn một chủ đề và trang bị cho mình lớp áo giáp kỹ thuật số vững chắc nhất!</p>
+            
+            <div class="card" style="background: linear-gradient(135deg, var(--blue-deep), var(--blue-main)); color: white; border: none; margin-top: 4rem; padding: 3rem 2rem;">
+                <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 800; margin-bottom: 1.5rem; text-align: center; color: white;">🤔 Bảng Câu Hỏi Tự Kiểm Tra</h2>
+                <p style="text-align: center; color: rgba(255,255,255,0.85); margin-bottom: 2rem;">Bạn đã thực sự an toàn chưa? Hãy tự trả lời những câu hỏi sau:</p>
+                
+                <ul class="checklist" style="color: white; max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 16px; margin-bottom: 2rem; text-align: left;">
+                    <li style="color: white; margin-bottom: 1.2rem;">Bạn có biết mật khẩu Facebook/TikTok của mình là gì không? (Hay nhờ người khác cài giúp?)</li>
+                    <li style="color: white; margin-bottom: 1.2rem;">Bạn có từng click vào một đường link vì tò mò dù không biết nó dẫn đi đâu?</li>
+                    <li style="color: white; margin-bottom: 1.2rem;">Bạn đã bao giờ chia sẻ mật khẩu (hoặc mã OTP) cho bạn thân vì tin tưởng tuyệt đối?</li>
+                    <li style="color: white; margin-bottom: 0;">Bạn có biết cách báo cáo một tài khoản giả mạo hay không?</li>
+                </ul>
+                
+                <div style="background: rgba(255, 214, 10, 0.2); border-left: 4px solid var(--yellow); padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 2rem auto; max-width: 600px; font-size: 0.95rem; text-align: left;">
+                    <strong style="color: var(--yellow); display: block; margin-bottom: 0.5rem; font-size: 1.05rem;">💡 Lời khuyên:</strong>
+                    <span style="color: rgba(255,255,255,0.9);">Nếu bạn trả lời <strong>"Có"</strong> cho các câu 2 và 3, hãy dừng lại ngay và làm theo hướng dẫn ở phần <strong>An toàn mạng</strong>! Đừng quên thử sức với <strong>Trò chơi Thám tử không gian mạng</strong> ở phần sau nhé!</span>
+                </div>
+
+                <div style="text-align: center; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.2); margin-top: 2rem;">
+                    <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; color: var(--cyan); margin-bottom: 1rem;">💌 Lời nhắn nhủ từ "Người gác cổng"</h3>
+                    <p style="font-size: 1.05rem; line-height: 1.8; max-width: 700px; margin: 0 auto; font-style: italic; color: rgba(255,255,255,0.9);">
+                        "Internet là một đại dương bao la, thầy không thể cầm tay chỉ việc cho các em từng phút một. Nhưng thầy có thể trang bị cho các em chiếc la bàn kiến thức này. Không gian mạng sẽ trở nên văn minh hay độc hại, điều đó phụ thuộc vào chính những gì các em chọn làm ngay sau khi nhấp chuột."
+                    </p>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; padding: 2rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-card);">
+                <h3 style="text-align: center; color: var(--blue-main); margin-bottom: 1.5rem;">📊 Thống kê đáng chú ý</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; text-align: center;">
+                    <div><strong style="font-size: 2.2rem; color: var(--red-soft);">70%</strong><br><small>Học sinh THCS từng gặp rủi ro mạng</small></div>
+                    <div><strong style="font-size: 2.2rem; color: var(--yellow);">85%</strong><br><small>Tài khoản bị hack do mật khẩu yếu</small></div>
+                    <div><strong style="font-size: 2.2rem; color: var(--cyan);">1/3</strong><br><small>Bị bắt nạt mạng ít nhất 1 lần</small></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; padding: 2.5rem; background: #fffcf2; border: 2px dashed #f1c40f; border-radius: var(--radius-lg); text-align: left;">
+                <h3 style="color: #d35400; font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; margin-bottom: 1rem;"><i class="fas fa-users"></i> Góc Dành Cho Phụ Huynh & Giáo Viên</h3>
+                <p style="color: var(--text-dark); font-size: 1.05rem; margin-bottom: 1rem;">Sự đồng hành của người lớn là lớp khiên bảo vệ vững chắc nhất cho con em. Dưới đây là sổ tay đồng hành ngắn gọn:</p>
+                <ul class="checklist" style="color: var(--text-dark);">
+                    <li><strong>Không cấm đoán thô bạo:</strong> Việc thu điện thoại hay kiểm tra tin nhắn một cách gắt gao thường khiến các em phản kháng và tìm cách giấu giếm tinh vi hơn. Hãy nói chuyện như những người bạn.</li>
+                    <li><strong>Tạo vùng an toàn chia sẻ:</strong> Hãy để con hiểu rằng: <em>"Dù con có lỡ bấm nhầm link, bị lừa mất tiền hay bị đe dọa, bố mẹ sẽ không mắng con. Bố mẹ sẽ cùng con giải quyết."</em></li>
+                    <li><strong>Làm gương cho con:</strong> Bản thân phụ huynh cũng cần hạn chế "oversharing" (chia sẻ quá mức) hình ảnh, thông tin cá nhân của con lên mạng xã hội.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <section id="an-toan-mang" class="page-view">
+            <div class="section-eyebrow">🔐 Chủ đề 1</div>
+            <h2 class="section-title">An Toàn Mạng: Khóa Chặt "Ngôi Nhà Số" Của Bạn</h2>
+            
+            <div class="card">
+                <p class="intro-text">Chúng ta luôn được dạy phải khóa cửa nhà cẩn thận trước khi đi ngủ, không đi theo người lạ ngoài đường. Nhưng trên Internet, hàng triệu học sinh lại đang "mở toang cửa nhà" và trò chuyện với người lạ mỗi ngày.</p>
+
+                <h3 class="sub-heading"><i class="fas fa-fingerprint"></i> 1. Khái niệm cốt lõi: Dấu Chân Kỹ Thuật Số (Digital Footprint)</h3>
+                <p class="paragraph-text">Mọi thao tác bạn thực hiện trên Internet: một cái Like dạo, một câu bình luận bốc đồng trên group, một bức ảnh chụp chung với bạn bè, hay một đoạn video TikTok... tất cả đều tạo ra <strong>Dấu chân kỹ thuật số</strong>.</p>
+                <p class="paragraph-text"><strong>Quy tắc "Hình xăm trên mạng":</strong> Khác với dấu chân trên cát có thể bị sóng biển xóa nhòa, dấu chân trên mạng là <strong>VĨNH VIỄN</strong>, giống như một hình xăm. Dù bạn có ấn nút Delete (Xóa), dữ liệu đó vẫn được lưu trữ ở một máy chủ nào đó, hoặc đã bị người khác chụp màn hình lại. Không bao giờ dùng mạng xã hội để trút giận hay nói xấu người khác, vì nó sẽ theo bạn suốt đời.</p>
+                
+                <div class="example-box">
+                    <strong>💡 Ví dụ thực tế về việc "Chia sẻ quá mức" (Oversharing):</strong>
+                    Nghỉ hè, gia đình bạn H. đi du lịch Đà Nẵng 5 ngày. H. háo hức đăng lên Facebook: <em>"Check-in sân bay Nội Bài, chào Hà Nội 5 ngày nhé!"</em> kèm theo ảnh vé máy bay hiển thị rõ mã vạch và tên. 
+                    <br><br>
+                    <strong>Hậu quả:</strong> Kẻ trộm trên mạng biết nhà H. hiện tại không có ai. Chúng theo dõi địa chỉ nhà H. (đã từng lộ trong một bài đăng cũ) và thực hiện trót lọt một vụ trộm. Chưa kể, tuyệt đối <strong>KHÔNG</strong> chụp ảnh khoe thẻ học sinh (có mã vạch, mã số, tên trường), Căn cước công dân hay quay video để lộ rõ khu vực sinh sống.
+                </div>
+
+                <h3 class="sub-heading"><i class="fas fa-wifi"></i> 2. Rủi ro từ "WiFi Công Cộng" và "Trào lưu độc hại"</h3>
+                <p class="paragraph-text"><strong>Bẫy WiFi Miễn Phí:</strong> Bạn ngồi ở quán trà sữa và thấy một mạng WiFi không có mật khẩu tên là "TraSua_Free_5G". Bạn mừng rỡ kết nối. Nhưng thực chất, đó là trạm phát sóng do một hacker ngồi ở bàn bên cạnh lập ra. Mọi tin nhắn, mật khẩu bạn gõ trên máy điện thoại lúc đó đều bị sao chép và chuyển thẳng về máy tính của hacker.</p>
+                <p class="paragraph-text"><strong>Cạm bẫy trào lưu mạng (Trend):</strong> Các nền tảng video ngắn thường xuyên xuất hiện những trào lưu nguy hiểm như "Ngạt thở để phê", "Thử thách cá voi xanh", hay trào lưu bôi nhọ giáo viên. Việc "đu trend" mù quáng để kiếm vài lượt thả tim có thể dẫn đến hậu quả mất mạng hoặc bị đuổi học.</p>
+
+                <h3 class="sub-heading"><i class="fas fa-shield-alt"></i> 3. Phân Tích Chuyên Sâu: Bộ 4 Quy Tắc Sinh Tồn (Quy Tắc 4K)</h3>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon blue">🚫</div>
+                        <div>
+                            <h4>1. KHÔNG chia sẻ bừa bãi</h4>
+                            <p>Thông tin cá nhân là tài sản. Tuyệt đối tránh hành vi Oversharing. Kẻ xấu có thể vẽ nên hồ sơ chi tiết về bạn để lừa đảo chỉ qua vài bức ảnh check-in.</p>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon cyan">🔒</div>
+                        <div>
+                            <h4>2. KHÓA bảo mật nhiều lớp</h4>
+                            <p>Hãy sử dụng mật khẩu mạnh (kết hợp chữ hoa, chữ thường, số, ký tự đặc biệt - tuyệt đối không dùng chung pass). Phải <strong>Bật Xác Thực 2 Yếu Tố (2FA)</strong> cho các tài khoản quan trọng (Facebook, Gmail, Zalo).</p>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon green">🔍</div>
+                        <div>
+                            <h4>3. KIỂM CHỨNG trước khi tin</h4>
+                            <p>Quy tắc vàng: Không kết bạn và không trò chuyện với người chưa từng gặp mặt ngoài đời. Dạy mình cách nhìn thanh địa chỉ (URL), lừa đảo thường viết sai chính tả như <code>faceb00k.com</code> thay vì <code>facebook.com</code>.</p>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon yellow">👨‍👩‍👧</div>
+                        <div>
+                            <h4>4. KẾT NỐI với người lớn</h4>
+                            <p>Bất cứ khi nào cảm thấy không ổn trên mạng: bị đe dọa, bị tống tiền... đừng tự giải quyết trong sợ hãi. Kẻ xấu chỉ mạnh khi bạn im lặng. Chụp màn hình, chặn kẻ đó và kể ngay với cha mẹ hoặc thầy cô.</p>
+                        </div>
+                    </div>
+                    <div class="rule-card" style="grid-column: 1 / -1; border-color: var(--red-soft);">
+                        <div class="rule-icon red">🕷️</div>
+                        <div>
+                            <h4>Cảnh báo Đỏ: Kẻ săn mồi (Grooming) & Cạm bẫy Idol</h4>
+                            <p>Kẻ xấu thường lợi dụng sự cô đơn hoặc nhu cầu muốn nổi tiếng của lứa tuổi mới lớn. Hãy cẩn thận với những "Cờ đỏ" (Red Flags) từ người lạ (hoặc bạn quen qua game): khen ngợi ngoại hình quá mức, hứa tặng quà đắt tiền, mời làm mẫu ảnh/casting kín, gặng hỏi chuyện thầm kín. Đặc biệt chú ý câu nói: <strong>"Đừng nói chuyện này cho bố mẹ em biết nhé"</strong> - Ngay khi nghe câu này, hãy chặn liên lạc lập tức!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="interactive-tool-box">
+                    <h4><i class="fas fa-key"></i> Thử nghiệm: Mật khẩu của bạn mạnh cỡ nào?</h4>
+                    <p style="color: var(--text-mid); font-size: 0.95rem; margin-bottom: 1.5rem;">Hãy gõ thử mật khẩu bạn đang dùng (Hệ thống này chỉ chạy trên máy bạn, tuyệt đối không lưu lại dữ liệu).</p>
+                    <div class="pwd-input-wrap">
+                        <input type="password" id="check-pwd-input" oninput="checkPasswordStrength()" placeholder="Nhập mật khẩu...">
+                        <i class="fas fa-eye toggle-eye" onclick="togglePwdVisibility()" id="eye-icon"></i>
+                    </div>
+                    <div class="pwd-meter-bg">
+                        <div class="pwd-meter" id="pwd-meter-bar"></div>
+                    </div>
+                    <p class="pwd-feedback" id="pwd-meter-text" style="color: var(--text-muted);">Đang chờ nhập liệu...</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>📌 Nhiệm vụ dọn dẹp tài khoản cá nhân (Checklist):</strong>
+                    <ul class="checklist">
+                        <li>Truy cập mục "Cài đặt & Quyền riêng tư" trên Facebook/TikTok/Instagram của bạn.</li>
+                        <li>Chuyển tất cả bài đăng trong quá khứ sang chế độ "Chỉ bạn bè" (Friends only) hoặc "Riêng tư" (Private).</li>
+                        <li>Kiểm tra danh sách bạn bè và <strong>Hủy kết bạn (Unfriend)</strong> định kỳ với những người lạ.</li>
+                        <li>Dùng băng dính giấy dán che Camera của laptop/máy tính bàn khi không sử dụng.</li>
+                    </ul>
+                </div>
+
+                <h3 class="sub-heading"><i class="fas fa-brain"></i> 4. Sức khỏe Tinh thần số (Digital Wellbeing)</h3>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon purple">📵</div>
+                        <div>
+                            <h4>Cai nghiện "Doomscrolling"</h4>
+                            <p>Lướt video ngắn vô thức liên tục (Doomscrolling) phá hủy sự tập trung. Hãy áp dụng "Digital Detox": Cài đặt giới hạn thời gian dùng ứng dụng, và <strong>tuyệt đối không mang điện thoại lên giường 1 tiếng trước khi ngủ</strong> để bảo vệ não bộ.</p>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon orange">🎭</div>
+                        <div>
+                            <h4>Vượt qua hội chứng FOMO</h4>
+                            <p>Sợ bị bỏ lỡ (FOMO) khiến bạn áp lực khi thấy bạn bè check-in sang chảnh, mua đồ hiệu. Hãy nhớ: Những gì trên mạng chỉ là "bề nổi" đã được chọn lọc kĩ càng. Không nên so sánh bản thân với cuộc sống ảo của người khác. Số lượng Like không định nghĩa giá trị con người bạn.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem; padding: 1.5rem; background: var(--cyan-soft); border-radius: var(--radius); border: 1px dashed var(--cyan);">
+                    <strong style="color: var(--blue-main); font-size: 1.1rem;">🤔 Bạn đã từng gặp trường hợp này chưa?</strong>
+                    <p style="color: var(--text-mid); margin-top: 0.5rem; margin-bottom: 1rem;">Hãy chia sẻ câu chuyện của bạn vào phiếu khảo sát nhé!</p>
+                    <button class="btn-survey-nav" onclick="switchPage('khao-sat')" style="border: none; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 700;">📝 Chia sẻ ngay</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="bao-luc-mang" class="page-view">
+            <div class="section-eyebrow">😡 Chủ đề 2</div>
+            <h2 class="section-title">Bạo Lực Mạng (Cyberbullying): Nỗi Đau Vô Hình</h2>
+            
+            <div class="card">
+                <p class="intro-text">Bạo lực mạng đáng sợ hơn bạo lực học đường truyền thống gấp nhiều lần. Ở trường, bạn có thể chạy về nhà để tìm bình yên. Nhưng với bạo lực mạng, sự công kích len lỏi vào phòng ngủ, kêu lên từng tiếng ting ting suốt 24/7. Tốc độ lan truyền của nó là không tưởng.</p>
+
+                <h3 class="sub-heading"><i class="fas fa-comments"></i> 1. Phân biệt Trêu đùa (Teasing) và Bắt nạt (Bullying)</h3>
+                <p class="paragraph-text">Rất nhiều bạn bao biện cho hành vi xấu của mình bằng câu nói "Tao đùa tí làm gì căng!". Hãy nhớ quy tắc này: Trêu đùa là khi TẤT CẢ mọi người cùng cười, kể cả người bị trêu. Còn nếu chỉ có đám đông cười, còn người bị trêu đang khóc hoặc tức giận, đó là BẮT NẠT.</p>
+                
+                <div class="example-box" style="background: rgba(155, 89, 182, 0.08); border-left-color: #9b59b6;">
+                    <strong style="color: #8e44ad;">⚖️ Quyền năng của "Người ngoài cuộc" (Bystander)</strong>
+                    Nếu bạn trong một group chuyên nói xấu, hoặc thấy bài bêu rếu trên Confession mà bạn thả "Haha" hay im lặng share bài, bạn đang tiếp tay cho cái ác. Đừng hùa theo! Hãy âm thầm report (báo cáo) bài viết, gửi tin nhắn an ủi nạn nhân và báo cáo sự việc cho thầy cô.
+                </div>
+                <div class="story-box" style="border-left-color: #e67e22; box-shadow: inset 0 0 20px rgba(230, 126, 34, 0.05);">
+                    <strong style="color: #d35400;">⚖️ Hậu quả pháp lý</strong>
+                    Đừng nghĩ rằng làm ẩn danh là không ai biết. Với sự phối hợp của nhà trường và cơ quan công an, các hành vi xúc phạm danh dự trên mạng hoàn toàn có thể bị truy vết. Một hành động "cào phím" nhất thời có thể để lại tiền án, tiền sự, làm tan vỡ giấc mơ đại học trong tương lai.
+                </div>
+
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <div class="rule-icon red">🗣️</div>
+                        <div>
+                            <h4>Bóc phốt & Miệt thị (Body Shaming)</h4>
+                            <p>Đăng Confession ẩn danh, dùng từ ngữ thô tục chê bai cân nặng, khuôn mặt, hay gia cảnh. Lập group "anti" hoặc cố tình cô lập bạn bè trong group chat lớp.</p>
+                        </div>
+                    </div>
+                    <div class="rule-card">
+                        <div class="rule-icon purple">📸</div>
+                        <div>
+                            <h4>Chế ảnh meme ác ý & Doxing</h4>
+                            <p>Chụp lén bạn bè, cắt ghép meme ác ý rồi phát tán. Công khai địa chỉ nhà, số điện thoại của bạn lên mạng để kích động người khác chửi bới (Doxing).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Improved Toxic Filter Section -->
+                <div class="interactive-tool-box" style="border-color: #9b59b6;">
+                    <h4 style="color: #8e44ad;"><i class="fas fa-filter"></i> Bộ mô phỏng: Kính lọc độc hại (Cải tiến)</h4>
+                    <p style="color: var(--text-mid); font-size: 0.95rem; margin-bottom: 1.5rem;">Thử gõ một câu chứa các từ mang tính công kích. Hệ thống đã được nâng cấp với danh sách từ khóa phong phú hơn để mô phỏng bộ lọc AI của các nền tảng mạng xã hội!</p>
+                    <div class="textarea-wrap">
+                        <textarea id="toxic-input" placeholder="Nhập câu nói của bạn vào đây... (ví dụ: Bạn ngu quá, xấu xí, mập ú, điên khùng...)"></textarea>
+                    </div>
+                    <button class="btn-action-tool" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);" onclick="filterToxicText()">Lọc Văn Bản</button>
+                    
+                    <div class="result-box" id="toxic-result-box" style="background: #f4ebf9; border-color: #d2b4de;">
+                        <strong style="color: #8e44ad; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Kết quả sau khi lọc:</strong>
+                        <p id="toxic-output" style="margin-top: 0.5rem; font-size: 1.1rem; color: var(--text-dark);"></p>
+                        <p style="margin-top: 1rem; font-size: 0.85rem; color: #7f8c8d; font-style: italic;">*Hệ thống mạng xã hội dùng AI để quét và đánh dấu tài khoản vi phạm. Nếu lạm dụng từ ngữ xấu, tài khoản của bạn sẽ bị "cấm ngôn" hoặc khóa vĩnh viễn.</p>
+                    </div>
+                </div>
+
+                <h3 class="sub-heading"><i class="fas fa-hand-holding-heart"></i> 2. Sơ cứu cảm xúc & Phản công hợp pháp</h3>
+                <p class="paragraph-text">Khi bị tấn công trên mạng, hoảng loạn là tự nhiên. Nhưng hãy hít sâu và ghi nhớ <strong>Nguyên tắc "3 KHÔNG"</strong>:</p>
+                <div class="steps-list">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div>
+                            <strong>KHÔNG phản hồi lúc nóng giận</strong>
+                            <p>Kẻ bắt nạt muốn thấy bạn khóc lóc, tổn thương và chửi rủa lại. Đôi co chỉ làm bài viết "viral" hơn. Vũ khí của bạn là: <strong>SỰ IM LẶNG VÀ RỜI KHỎI MÀN HÌNH</strong>. Tắt WiFi, uống nước, nói chuyện với gia đình.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div>
+                            <strong>KHÔNG xóa bằng chứng</strong>
+                            <p>Kẻ ném đá giấu tay rất hèn nhát, chúng thường thu hồi tin hoặc xóa bài sau đó. Phải chụp ảnh màn hình (screenshot) toàn bộ bài đăng, tin nhắn đe dọa, link profile của kẻ cầm đầu ngay lập tức để làm bằng chứng.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div>
+                            <strong>KHÔNG chịu đựng một mình</strong>
+                            <p>Báo cáo (Report) bài viết để hệ thống gỡ bỏ. Mang bằng chứng đến gặp Giáo viên chủ nhiệm hoặc bố mẹ. Theo Luật An ninh mạng, hành vi xúc phạm danh dự người khác trên mạng bị phạt tiền rất nặng.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2.5rem; padding: 1.8rem; background: rgba(0,217,139,0.08); border-radius: var(--radius);">
+                    <strong>🌟 Lời khuyên cho nạn nhân:</strong> Hãy nhớ rằng bạn không cô đơn. Hàng triệu bạn trẻ đã vượt qua và trở nên mạnh mẽ hơn. Nói chuyện với người thân là bước đầu tiên quan trọng nhất. <br><br>
+                    <strong>📞 Kênh hỗ trợ khẩn cấp:</strong> Nếu bạn cảm thấy bế tắc và không biết chia sẻ cùng ai, hãy gọi ngay đến <strong>Tổng đài Quốc gia bảo vệ Trẻ em: 111</strong> (Miễn phí 24/7).
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem; padding: 1.5rem; background: var(--cyan-soft); border-radius: var(--radius); border: 1px dashed var(--cyan);">
+                    <strong style="color: var(--blue-main); font-size: 1.1rem;">🤔 Bạn đã từng bị trêu đùa quá trớn chưa?</strong>
+                    <p style="color: var(--text-mid); margin-top: 0.5rem; margin-bottom: 1rem;">Cho chúng mình biết qua phần đánh giá nhé!</p>
+                    <button class="btn-survey-nav" onclick="switchPage('khao-sat')" style="border: none; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 700;">📝 Làm khảo sát</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="lua-dao" class="page-view">
+            <div class="section-eyebrow">⚠️ Chủ đề 3</div>
+            <h2 class="section-title">Hệ Sinh Thái Lừa Đảo Chuyên Nghiệp</h2>
+            
+            <div class="card">
+                <p class="intro-text">Không gian mạng là một khu rừng rậm có những kẻ săn mồi tinh vi. Chúng dùng sự thao túng tâm lý, đánh vào lòng tham hoặc nỗi sợ hãi của học sinh để trục lợi.</p>
+                <p class="paragraph-text">Hãy đọc thật kỹ <strong>10 kịch bản lừa đảo kinh điển</strong> dưới đây để không bao giờ trở thành "con mồi".</p>
+
+                <div class="scam-grid">
+                    <div class="scam-card" style="border-left-color: #3498db;">
+                        <div class="scam-card-head">
+                            <span class="scam-tag" style="background: rgba(52, 152, 219, 0.15); color: #2980b9;">🎭 Chiêu bài tâm lý</span>
+                            <h4>"Đồng cảm giả tạo"</h4>
+                        </div>
+                        <p>Kẻ gian thường đóng vai người bị hại, người gặp khó khăn để đánh vào lòng trắc ẩn của học sinh.</p>
+                        <div class="scam-tip">✅ Giải pháp: Xác minh kỹ thông tin hoặc hỏi ý kiến người lớn trước khi giúp đỡ ai đó trên mạng.</div>
+                    </div>
+
+                    <div class="scam-card" style="border-left-color: #2ecc71;">
+                        <div class="scam-card-head">
+                            <span class="scam-tag" style="background: rgba(46, 204, 113, 0.15); color: #27ae60;">📱 Bẫy công nghệ</span>
+                            <h4>Nguy cơ từ mã QR lạ</h4>
+                        </div>
+                        <p>Mã QR độc hại dán ở nơi công cộng. Quét mã sẽ cài mã độc hoặc điều hướng đến trang thu thập thông tin.</p>
+                        <div class="scam-tip">✅ Giải pháp: Tuyệt đối không quét mã QR không rõ nguồn gốc, bị dán đè lên.</div>
+                    </div>
+
+                    <div class="scam-card red">
+                        <div class="scam-card-head">
+                            <span class="scam-tag red">🚨 Mạo danh người thân</span>
+                            <h4>"Chuyển tiền gấp / Mượn thẻ cào"</h4>
+                        </div>
+                        <p>Hack Facebook bạn bè, nhắn tin vay tiền. Nguy hiểm hơn, chúng dùng Deepfake Video/Voice để gọi điện (hình ảnh thường hơi mờ/giật).</p>
+                        <div class="scam-tip">✅ Giải pháp: GỌI ĐIỆN THOẠI TRỰC TIẾP (số di động). Lấy cớ "loa hỏng" là 100% lừa đảo.</div>
+                    </div>
+
+                    <div class="scam-card yellow">
+                        <div class="scam-card-head">
+                            <span class="scam-tag yellow">🎮 Lừa đảo Game thủ</span>
+                            <h4>"Nhận Skin VIP / Vòng quay free"</h4>
+                        </div>
+                        <p>Click link web giả, nhập tài khoản là mất nick. Hoặc rao bán tài khoản VIP, nạp thẻ giá rẻ trên hội nhóm, sau khi em chuyển tiền thì chúng chặn liên lạc.</p>
+                        <div class="scam-tip">✅ Giải pháp: Không ai cho không ai cái gì. Không giao dịch mua bán nick lạ.</div>
+                    </div>
+
+                    <div class="scam-card teal">
+                        <div class="scam-card-head">
+                            <span class="scam-tag teal">🎓 Giả danh trường lớp</span>
+                            <h4>"Giáo viên thu quỹ đột xuất"</h4>
+                        </div>
+                        <p>Lập nick giả hoặc hack nick của giáo viên, lớp trưởng để nhắn tin yêu cầu học sinh đóng tiền quỹ lớp đột xuất, mua tài liệu qua link lạ.</p>
+                        <div class="scam-tip">✅ Giải pháp: Báo ngay với phụ huynh, gọi điện thoại xác minh trực tiếp với thầy cô.</div>
+                    </div>
+
+                    <div class="scam-card orange">
+                        <div class="scam-card-head">
+                            <span class="scam-tag orange">🎁 Bẫy Lòng Tham</span>
+                            <h4>"Quà ngoại quốc / Trúng thưởng"</h4>
+                        </div>
+                        <p>Gửi tin nhắn trúng iPhone, hoặc "người nước ngoài" gửi tặng quà đắt tiền, nhưng yêu cầu em phải chuyển một khoản tiền nhỏ gọi là "phí vận chuyển" hoặc "thuế hải quan".</p>
+                        <div class="scam-tip">✅ Giải pháp: Nếu là quà thật, không ai bắt người nhận trả phí trước. Lừa đảo 100%.</div>
+                    </div>
+
+                    <div class="scam-card purple">
+                        <div class="scam-card-head">
+                            <span class="scam-tag purple">📷 Tống tiền tình cảm</span>
+                            <h4>Deepfake và Lừa tình</h4>
+                        </div>
+                        <p>Dụ gửi ảnh hở hang, hoặc dùng AI ghép ảnh em vào video nhạy cảm. Sau đó dọa phát tán để tống tiền.</p>
+                        <div class="scam-tip">✅ Giải pháp: KHÔNG gửi ảnh nhạy cảm. Bị dọa tống tiền: ĐỪNG CHUYỂN TIỀN. Báo công an ngay.</div>
+                    </div>
+
+                    <div class="scam-card cyan">
+                        <div class="scam-card-head">
+                            <span class="scam-tag cyan">🔑 Chiếm đoạt mã bảo mật</span>
+                            <h4>"Đọc cho anh mã 6 số"</h4>
+                        </div>
+                        <p>Xưng là công an, nhân viên bưu điện yêu cầu đọc mã xác nhận 6 số để cướp tài khoản ngân hàng hoặc mạng xã hội.</p>
+                        <div class="scam-tip">✅ Giải pháp: Mã OTP là SINH MẠNG. Tuyệt đối không đọc cho bất kỳ ai.</div>
+                    </div>
+
+                    <div class="scam-card orange">
+                        <div class="scam-card-head">
+                            <span class="scam-tag orange">💰 Việc nhẹ lương cao</span>
+                            <h4>"Thả tim video kiếm 200k"</h4>
+                        </div>
+                        <p>Tuyển người gõ văn bản, chốt đơn không kinh nghiệm. Yêu cầu "nộp tiền tạm ứng" vài triệu rồi bốc hơi.</p>
+                        <div class="scam-tip">✅ Giải pháp: Việc làm online yêu cầu NỘP TIỀN / ĐÓNG CỌC trước đều là lừa đảo.</div>
+                    </div>
+                </div>
+
+                <div class="interactive-tool-box" style="margin-top: 4rem; border-color: var(--red-soft);">
+                    <h4 style="color: #c0392b;"><i class="fas fa-search-dollar"></i> Máy quét: Vạch trần Tin nhắn giả mạo</h4>
+                    <p style="color: var(--text-mid); font-size: 0.95rem; margin-bottom: 1.5rem;">Hãy copy và dán một đoạn tin nhắn/email mà bạn nghi ngờ vào đây. AI cục bộ sẽ quét các từ khóa "Cờ đỏ" và chấm điểm rủi ro.</p>
+                    <div class="textarea-wrap">
+                        <textarea id="scam-scan-input" placeholder="Dán tin nhắn vào đây (VD: Chuc mung ban trung thuong iPhone, vui long nạp 50k vao link...)"></textarea>
+                    </div>
+                    <button class="btn-action-tool" style="background: linear-gradient(135deg, #e74c3c, #c0392b);" onclick="scanScamMessage()">Phân Tích Ngay</button>
+                    
+                    <div class="result-box" id="scam-result-box" style="background: #fdf2f2; border-color: #f5b7b1;">
+                        <strong style="color: #c0392b; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">Kết quả quét:</strong>
+                        <div style="display: flex; align-items: center; gap: 15px; margin: 1rem 0;">
+                            <div style="flex: 1; height: 12px; background: #e8eaed; border-radius: 6px; overflow: hidden;">
+                                <div id="scam-prob-bar" style="height: 100%; width: 0%; background: #e74c3c; transition: width 0.5s;"></div>
+                            </div>
+                            <strong style="font-size: 1.4rem; color: #c0392b;" id="scam-prob-text">0%</strong>
+                        </div>
+                        <p id="scam-flags-found" style="font-size: 0.95rem; color: var(--text-dark); margin-bottom: 0.5rem; font-weight: 500;"></p>
+                        <p id="scam-verdict" style="font-size: 1rem; color: #c0392b; font-weight: 700;"></p>
+                    </div>
+                </div>
+
+                <h3 class="sub-heading" style="margin-top: 4rem;"><i class="fas fa-comment-slash"></i> Trình Giả Lập Nhắn Tin Lừa Đảo (20 Tình huống)</h3>
+                <p class="paragraph-text">Hệ thống sẽ đóng vai kẻ lừa đảo nhắn tin cho bạn. Hãy chọn cách phản hồi thông minh nhất! Nếu chọn sai, bạn sẽ biết ngay hậu quả.</p>
+                <div class="chat-sim-container">
+                    <div class="chat-sim-header">
+                        Tin nhắn từ Người lạ
+                        <span id="sim-counter" style="font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.8rem; border-radius: 999px;">1/20</span>
+                    </div>
+                    <div class="chat-sim-body" id="sim-body">
+                        </div>
+                    <div class="chat-sim-actions" id="sim-actions">
+                        </div>
+                </div>
+
+                <h3 class="sub-heading" style="margin-top: 4rem;"><i class="fas fa-door-open"></i> 🆘 Cẩm Nang Thoát Hiểm (Khi ĐÃ trở thành nạn nhân)</h3>
+                <p class="paragraph-text">Nếu bạn lỡ bấm nhầm link, hoặc bị lừa mất tiền/mất nick, hãy giữ bình tĩnh và thực hiện ngay các bước sau:</p>
+                <div class="steps-list" style="margin-top: 1rem;">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div>
+                            <strong>Bảo vệ bằng chứng</strong>
+                            <p>Kẻ lừa đảo thường xóa tin nhắn ngay sau khi lấy được tiền. Hãy nhanh tay chụp màn hình toàn bộ đoạn chat, đường link, số tài khoản, số điện thoại của chúng.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div>
+                            <strong>Ngắt kết nối và Khóa tài khoản</strong>
+                            <p>Đổi mật khẩu ngay lập tức. Nếu trót lộ thông tin thẻ ngân hàng/ví điện tử, hãy nhờ bố mẹ gọi tổng đài ngân hàng để khóa thẻ khẩn cấp. Rút ngay cáp mạng/tắt WiFi nếu nghi ngờ máy tính nhiễm mã độc.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div>
+                            <strong>Sử dụng tính năng Báo cáo (Report)</strong>
+                            <p>Sử dụng nút Report trên Facebook, TikTok, Zalo đối với các tài khoản và bài đăng lừa đảo để hệ thống khóa nick kẻ gian, ngăn chúng hại thêm người khác.</p>
+                        </div>
+                    </div>
+                    <div class="step" style="border-color: var(--red-soft);">
+                        <div class="step-num" style="background: var(--red-soft);">4</div>
+                        <div>
+                            <strong>Vượt qua rào cản tâm lý</strong>
+                            <p>Bạn KHÔNG đơn độc và KHÔNG NÊN sợ hãi, giấu giếm. Kẻ xấu thường dọa dẫm để bạn im lặng. Việc quan trọng nhất là báo ngay cho cha mẹ, thầy cô hoặc công an.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box" style="margin-top: 3rem; background: #e0f2f1; border-color: #80cbc4;">
+                    <h4 style="color: #00695c; margin-bottom: 1rem;"><i class="fas fa-phone-alt"></i> Tài Nguyên & Hỗ Trợ Khẩn Cấp</h4>
+                    <ul class="checklist" style="color: #004d40;">
+                        <li><strong>Kiểm tra độ tin cậy:</strong> Nếu thấy link web lạ hoặc số tài khoản nghi ngờ, bạn có thể tự tra cứu tại dự án phi lợi nhuận <strong>Chongluadao.vn</strong> hoặc <strong>Tinnhiemmang.vn</strong>.</li>
+                        <li><strong>Đường dây nóng hỗ trợ:</strong> Hãy gọi ngay <strong>Tổng đài Quốc gia Bảo vệ Trẻ em: 111</strong> (Hoạt động 24/7, hoàn toàn miễn phí) để được hỗ trợ khi bị đe dọa, tống tiền hoặc xâm hại trên mạng.</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem; padding: 1.5rem; background: var(--cyan-soft); border-radius: var(--radius); border: 1px dashed var(--cyan);">
+                    <strong style="color: var(--blue-main); font-size: 1.1rem;">🤔 Bạn đã bao giờ nhận được link lạ?</strong>
+                    <p style="color: var(--text-mid); margin-top: 0.5rem; margin-bottom: 1rem;">Hãy điền vào phiếu khảo sát để đóng góp ý kiến!</p>
+                    <button class="btn-survey-nav" onclick="switchPage('khao-sat')" style="border: none; cursor: pointer; font-family: inherit; font-size: 0.95rem; font-weight: 700;">📝 Đóng góp ngay</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tro-choi" class="page-view">
+            <div class="section-eyebrow">🎮 Chủ đề 4</div>
+            <h2 class="section-title">Trò Chơi: Thám Tử Không Gian Mạng</h2>
+            
+            <div class="game-wrapper">
+                <div class="game-panel">
+                    
+                    <div id="game-start" class="game-screen active">
+                        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; color: var(--blue-deep); margin-bottom: 1rem;">Luật Chơi</h3>
+                        <p style="color: var(--text-mid); font-size: 1.1rem; margin-bottom: 2rem;">
+                            Bạn có <strong>10 giây</strong> để đọc bối cảnh và tình huống. Hãy sử dụng kiến thức vừa học để quyết định đây là một tình huống <strong>Lừa Đảo</strong> hay là <strong>Thật</strong>. Tổng cộng có 20 câu hỏi đang chờ bạn. Bạn đã sẵn sàng bảo vệ không gian mạng chưa?
+                        </p>
+                        <button onclick="startGame()" class="btn-game" style="background: linear-gradient(135deg, var(--blue-main), var(--cyan)); width: 100%;">🚀 Bắt Đầu Ngay</button>
+                    </div>
+
+                    <div id="game-play" class="game-screen">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <span class="score-display">Điểm: <span id="game-score">0</span>/20</span>
+                            <span style="font-weight: 700; color: var(--text-muted);">Câu: <span id="game-current-q">1</span>/20</span>
+                        </div>
+                        
+                        <div class="timer-text" id="game-timer-text">10s</div>
+                        <div class="game-timer-container">
+                            <div class="game-timer-bar" id="game-timer-bar"></div>
+                        </div>
+
+                        <div class="game-context" id="q-context">Bối cảnh: ...</div>
+                        <div class="game-situation" id="q-situation">Tình huống: ...</div>
+
+                        <div class="game-btn-group">
+                            <button onclick="checkAnswer('Lừa Đảo')" class="btn-game scam">🚨 Lừa Đảo</button>
+                            <button onclick="checkAnswer('Thật')" class="btn-game real">✅ Thật</button>
+                        </div>
+                    </div>
+
+                    <div id="game-end" class="game-screen">
+                        <h3 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--blue-deep); margin-bottom: 1rem;">Kết quả huấn luyện</h3>
+                        <p style="font-size: 1.2rem; color: var(--text-dark); margin-bottom: 1rem;">Bạn đạt được: <strong style="font-size: 2rem; color: var(--blue-main);" id="final-score">0</strong> <strong>/ 20</strong> điểm</p>
+                        <p id="game-feedback" style="font-size: 1.1rem; color: var(--text-mid); margin-bottom: 2rem; min-height: 60px;"></p>
+                        <button onclick="resetGame()" class="btn-game" style="background: linear-gradient(135deg, var(--blue-main), var(--cyan));">🔄 Chơi Lại</button>
+                        <button onclick="switchPage('khao-sat')" class="btn-game" style="background: var(--surface); color: var(--text-dark); border: 2px solid var(--border);">📝 Chuyển đến Khảo sát</button>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="khao-sat" class="page-view">
+            <div class="section-eyebrow">📝 Khảo sát</div>
+            <h2 class="section-title">Phiếu Khảo Sát Tự Đánh Giá</h2>
+            <div class="survey-container">
+                <div class="survey-header-bar">
+                    <h2>PHIẾU KHẢO SÁT</h2>
+                    <p>Đề tài: Công nghệ số và những kỹ năng, giải pháp an toàn trên không gian mạng cho học sinh THCS</p>
+                </div>
+                <div class="survey-body">
+                    <div class="instructions">
+                        <strong>📌 Hướng dẫn:</strong> Đánh dấu (✓) vào một mức độ phù hợp nhất với ý kiến của em.<br><br>
+                        <strong>Thang đo:</strong> 
+                        1. Hoàn toàn không đồng ý &nbsp;|&nbsp; 
+                        2. Không đồng ý &nbsp;|&nbsp; 
+                        3. Phân vân &nbsp;|&nbsp; 
+                        4. Đồng ý &nbsp;|&nbsp; 
+                        5. Hoàn toàn đồng ý
+                    </div>
+
+                    <form id="surveyForm">
+                        <div class="survey-section-title">👤 PHẦN I. THÔNG TIN CHUNG</div>
+                        <div class="form-group">
+                            <label>1. Giới tính:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="gender" value="Nam" required> Nam</label>
+                                <label><input type="radio" name="gender" value="Nữ"> Nữ</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>2. Lớp:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="class" value="6" required> 6</label>
+                                <label><input type="radio" name="class" value="7"> 7</label>
+                                <label><input type="radio" name="class" value="8"> 8</label>
+                                <label><input type="radio" name="class" value="9"> 9</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>3. Thời gian sử dụng Internet mỗi ngày:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="time" value="Dưới 1 giờ" required> Dưới 1 giờ</label>
+                                <label><input type="radio" name="time" value="1–2 giờ"> 1–2 giờ</label>
+                                <label><input type="radio" name="time" value="2–4 giờ"> 2–4 giờ</label>
+                                <label><input type="radio" name="time" value="Trên 4 giờ"> Trên 4 giờ</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>4. Mục đích sử dụng Internet:</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="purpose" value="Học tập" required> Học tập</label>
+                                <label><input type="radio" name="purpose" value="Giải trí"> Giải trí</label>
+                                <label><input type="radio" name="purpose" value="Cả hai"> Cả hai</label>
+                            </div>
+                        </div>
+
+                        <div class="survey-section-title">📊 PHẦN II, III, IV. ĐÁNH GIÁ THEO THANG ĐIỂM 1–5</div>
+                        <div class="likert-wrapper">
+                            <table class="likert-table">
+                                <thead>
+                                    <tr><th>Nội dung</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>5. Em thường xuyên sử dụng mạng xã hội.</td><td><input type="radio" name="q5" value="1" required></td><td><input type="radio" name="q5" value="2"></td><td><input type="radio" name="q5" value="3"></td><td><input type="radio" name="q5" value="4"></td><td><input type="radio" name="q5" value="5"></td></tr>
+                                    <tr><td>6. Em từng nhận được tin nhắn hoặc đường link lạ.</td><td><input type="radio" name="q6" value="1" required></td><td><input type="radio" name="q6" value="2"></td><td><input type="radio" name="q6" value="3"></td><td><input type="radio" name="q6" value="4"></td><td><input type="radio" name="q6" value="5"></td></tr>
+                                    <tr><td>7. Em từng kết bạn với người chưa quen ngoài đời.</td><td><input type="radio" name="q7" value="1" required></td><td><input type="radio" name="q7" value="2"></td><td><input type="radio" name="q7" value="3"></td><td><input type="radio" name="q7" value="4"></td><td><input type="radio" name="q7" value="5"></td></tr>
+                                    <tr><td>8. Em từng chia sẻ thông tin cá nhân trên mạng.</td><td><input type="radio" name="q8" value="1" required></td><td><input type="radio" name="q8" value="2"></td><td><input type="radio" name="q8" value="3"></td><td><input type="radio" name="q8" value="4"></td><td><input type="radio" name="q8" value="5"></td></tr>
+                                    <tr><td>9. Em từng gặp tin giả hoặc thông tin sai sự thật.</td><td><input type="radio" name="q9" value="1" required></td><td><input type="radio" name="q9" value="2"></td><td><input type="radio" name="q9" value="3"></td><td><input type="radio" name="q9" value="4"></td><td><input type="radio" name="q9" value="5"></td></tr>
+                                    <tr><td>10. Em từng bị làm phiền hoặc quấy rối trên mạng.</td><td><input type="radio" name="q10" value="1" required></td><td><input type="radio" name="q10" value="2"></td><td><input type="radio" name="q10" value="3"></td><td><input type="radio" name="q10" value="4"></td><td><input type="radio" name="q10" value="5"></td></tr>
+                                    <tr><td>11. Em thường kiểm tra nguồn thông tin trước khi chia sẻ.</td><td><input type="radio" name="q11" value="1" required></td><td><input type="radio" name="q11" value="2"></td><td><input type="radio" name="q11" value="3"></td><td><input type="radio" name="q11" value="4"></td><td><input type="radio" name="q11" value="5"></td></tr>
+                                    <tr><td>12. Em nghĩ Internet tiềm ẩn nhiều nguy cơ mất an toàn.</td><td><input type="radio" name="q12" value="1" required></td><td><input type="radio" name="q12" value="2"></td><td><input type="radio" name="q12" value="3"></td><td><input type="radio" name="q12" value="4"></td><td><input type="radio" name="q12" value="5"></td></tr>
+                                    <tr><td>13. Em biết cách tạo mật khẩu mạnh.</td><td><input type="radio" name="q13" value="1" required></td><td><input type="radio" name="q13" value="2"></td><td><input type="radio" name="q13" value="3"></td><td><input type="radio" name="q13" value="4"></td><td><input type="radio" name="q13" value="5"></td></tr>
+                                    <tr><td>14. Em biết không cung cấp mã OTP cho người khác.</td><td><input type="radio" name="q14" value="1" required></td><td><input type="radio" name="q14" value="2"></td><td><input type="radio" name="q14" value="3"></td><td><input type="radio" name="q14" value="4"></td><td><input type="radio" name="q14" value="5"></td></tr>
+                                    <tr><td>15. Em biết cách nhận biết trang web hoặc đường link giả mạo.</td><td><input type="radio" name="q15" value="1" required></td><td><input type="radio" name="q15" value="2"></td><td><input type="radio" name="q15" value="3"></td><td><input type="radio" name="q15" value="4"></td><td><input type="radio" name="q15" value="5"></td></tr>
+                                    <tr><td>16. Em biết cách nhận diện tin giả.</td><td><input type="radio" name="q16" value="1" required></td><td><input type="radio" name="q16" value="2"></td><td><input type="radio" name="q16" value="3"></td><td><input type="radio" name="q16" value="4"></td><td><input type="radio" name="q16" value="5"></td></tr>
+                                    <tr><td>17. Em biết cài đặt quyền riêng tư cho tài khoản.</td><td><input type="radio" name="q17" value="1" required></td><td><input type="radio" name="q17" value="2"></td><td><input type="radio" name="q17" value="3"></td><td><input type="radio" name="q17" value="4"></td><td><input type="radio" name="q17" value="5"></td></tr>
+                                    <tr><td>18. Em biết cách chặn hoặc báo cáo tài khoản xấu.</td><td><input type="radio" name="q18" value="1" required></td><td><input type="radio" name="q18" value="2"></td><td><input type="radio" name="q18" value="3"></td><td><input type="radio" name="q18" value="4"></td><td><input type="radio" name="q18" value="5"></td></tr>
+                                    <tr><td>19. Em biết cần báo cho cha mẹ hoặc giáo viên khi gặp nguy hiểm trên mạng.</td><td><input type="radio" name="q19" value="1" required></td><td><input type="radio" name="q19" value="2"></td><td><input type="radio" name="q19" value="3"></td><td><input type="radio" name="q19" value="4"></td><td><input type="radio" name="q19" value="5"></td></tr>
+                                    <tr><td>20. Em không nhấp vào các đường link không rõ nguồn gốc.</td><td><input type="radio" name="q20" value="1" required></td><td><input type="radio" name="q20" value="2"></td><td><input type="radio" name="q20" value="3"></td><td><input type="radio" name="q20" value="4"></td><td><input type="radio" name="q20" value="5"></td></tr>
+                                    <tr><td>21. Em có thể tự bảo vệ thông tin cá nhân trên Internet.</td><td><input type="radio" name="q21" value="1" required></td><td><input type="radio" name="q21" value="2"></td><td><input type="radio" name="q21" value="3"></td><td><input type="radio" name="q21" value="4"></td><td><input type="radio" name="q21" value="5"></td></tr>
+                                    <tr><td>22. Em tự tin hướng dẫn bạn bè sử dụng Internet an toàn.</td><td><input type="radio" name="q22" value="1" required></td><td><input type="radio" name="q22" value="2"></td><td><input type="radio" name="q22" value="3"></td><td><input type="radio" name="q22" value="4"></td><td><input type="radio" name="q22" value="5"></td></tr>
+                                    <tr><td>23. Em mong muốn được học nhiều hơn về an toàn trên không gian mạng.</td><td><input type="radio" name="q23" value="1" required></td><td><input type="radio" name="q23" value="2"></td><td><input type="radio" name="q23" value="3"></td><td><input type="radio" name="q23" value="4"></td><td><input type="radio" name="q23" value="5"></td></tr>
+                                    <tr><td>24. Nhà trường nên tổ chức các chuyên đề về an toàn số.</td><td><input type="radio" name="q24" value="1" required></td><td><input type="radio" name="q24" value="2"></td><td><input type="radio" name="q24" value="3"></td><td><input type="radio" name="q24" value="4"></td><td><input type="radio" name="q24" value="5"></td></tr>
+                                    <tr><td>25. Em thấy cẩm nang hoặc sổ tay an toàn mạng là cần thiết.</td><td><input type="radio" name="q25" value="1" required></td><td><input type="radio" name="q25" value="2"></td><td><input type="radio" name="q25" value="3"></td><td><input type="radio" name="q25" value="4"></td><td><input type="radio" name="q25" value="5"></td></tr>
+                                    <tr><td>26. Em thích học qua video hoặc trò chơi tình huống.</td><td><input type="radio" name="q26" value="1" required></td><td><input type="radio" name="q26" value="2"></td><td><input type="radio" name="q26" value="3"></td><td><input type="radio" name="q26" value="4"></td><td><input type="radio" name="q26" value="5"></td></tr>
+                                    <tr><td>27. Em sẵn sàng tham gia tuyên truyền về an toàn số.</td><td><input type="radio" name="q27" value="1" required></td><td><input type="radio" name="q27" value="2"></td><td><input type="radio" name="q27" value="3"></td><td><input type="radio" name="q27" value="4"></td><td><input type="radio" name="q27" value="5"></td></tr>
+                                    <tr><td>28. Sau khi được hướng dẫn, em sẽ thay đổi cách sử dụng Internet theo hướng an toàn hơn.</td><td><input type="radio" name="q28" value="1" required></td><td><input type="radio" name="q28" value="2"></td><td><input type="radio" name="q28" value="3"></td><td><input type="radio" name="q28" value="4"></td><td><input type="radio" name="q28" value="5"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="survey-section-title">💬 CÂU HỎI MỞ</div>
+                        <div class="form-group">
+                            <label>1. Theo em, nguy cơ lớn nhất đối với học sinh khi sử dụng Internet là gì?</label>
+                            <textarea name="open1" placeholder="Hãy viết suy nghĩ của em..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>2. Em mong muốn nhà trường hỗ trợ những nội dung gì để sử dụng Internet an toàn hơn?</label>
+                            <textarea name="open2" placeholder="Hãy viết suy nghĩ của em..."></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">✅ Nộp Phiếu Khảo Sát</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="survey-popup" id="surveyPopup">
+        <div class="popup-icon">👋</div>
+        <div class="popup-title">1 phút khảo sát nhé?</div>
+        <p>Bạn đã nạp được khá nhiều kiến thức sinh tồn rồi đấy. Hãy dành chút thời gian đóng góp ý kiến cho hệ thống nha.</p>
+        <div class="popup-actions">
+            <button class="btn-accept" onclick="goToSurvey()">Làm ngay</button>
+            <button class="btn-deny" onclick="closePopup(false)">Để sau</button>
+        </div>
+    </div>
+
+    <footer>
+        <strong>CyberSafe THCS</strong> · Dự án bảo vệ thanh thiếu niên 2025<br>
+        <small>Được thiết kế với ❤️ dành cho các bạn học sinh THCS Việt Nam</small>
+    </footer>
+
+    <script>
+        let popupTimer;
+        let isSurveyDone = false;
+
+        // --- LOGIC CHUYỂN TRANG (SPA) ---
+        function switchPage(pageId) {
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => page.classList.remove('active'));
+
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active-link'));
+
+            document.getElementById(pageId).classList.add('active');
+            
+            const activeNav = Array.from(navLinks).find(link => link.getAttribute('onclick').includes(pageId));
+            if(activeNav) activeNav.classList.add('active-link');
+
+            // Update progress dots
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', false);
+            });
+            // Mapping for 6 dots
+            if (pageId === 'home') dots[0].classList.add('active');
+            else if (pageId === 'an-toan-mang') dots[1].classList.add('active');
+            else if (pageId === 'bao-luc-mang') dots[2].classList.add('active');
+            else if (pageId === 'lua-dao') dots[3].classList.add('active');
+            else if (pageId === 'tro-choi') dots[4].classList.add('active');
+            else if (pageId === 'khao-sat') dots[5].classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            if (pageId === 'khao-sat') {
+                closePopup(true); 
+            }
+        }
+
+        switchPage('home');
+
+        // --- SCROLL POPUP ---
+        let popupTriggered = false;
+
+        window.addEventListener('scroll', () => {
+            if (popupTriggered || isSurveyDone || document.getElementById('khao-sat').classList.contains('active')) return;
+
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            
+            if (scrollHeight <= clientHeight) return;
+
+            const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+            
+            if (scrollPercent >= 40) {
+                showPopup();
+                popupTriggered = true; 
+            }
+        });
+
+        function showPopup() {
+            if (isSurveyDone || document.getElementById('khao-sat').classList.contains('active')) return;
+            
+            const popup = document.getElementById('surveyPopup');
+            if (popup && !popup.classList.contains('show')) {
+                popup.classList.add('show');
+                clearTimeout(popupTimer);
+                popupTimer = setTimeout(() => {
+                    if (popup.classList.contains('show')) closePopup(false);
+                }, 10000);
+            }
+        }
+
+        function closePopup(permanent = false) {
+            const popup = document.getElementById('surveyPopup');
+            if (popup) popup.classList.remove('show');
+            clearTimeout(popupTimer);
+
+            if (permanent) {
+                isSurveyDone = true;
+            } else if (!isSurveyDone && !document.getElementById('khao-sat').classList.contains('active')) {
+                popupTimer = setTimeout(showPopup, 60000);
+            }
+        }
+
+        function goToSurvey() {
+            closePopup(true);
+            switchPage('khao-sat');
+        }
+
+        // Survey form
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Cảm ơn bạn đã đóng góp ý kiến! Dữ liệu của bạn đã được ghi nhận vào hệ thống. Bạn thật tuyệt vời!');
+            this.reset();
+            switchPage('home');
+        });
+
+        // Keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === '/' && document.activeElement.tagName !== "TEXTAREA" && document.activeElement.tagName !== "INPUT") {
+                document.getElementById('khao-sat').scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // --- PASSWORD CHECKER LOGIC ---
+        function togglePwdVisibility() {
+            const input = document.getElementById('check-pwd-input');
+            const icon = document.getElementById('eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function checkPasswordStrength() {
+            const pwd = document.getElementById('check-pwd-input').value;
+            const meter = document.getElementById('pwd-meter-bar');
+            const text = document.getElementById('pwd-meter-text');
+
+            if (pwd.length === 0) {
+                meter.style.width = '0%';
+                text.innerText = 'Đang chờ nhập liệu...';
+                text.style.color = 'var(--text-muted)';
+                return;
+            }
+
+            let score = 0;
+            if (pwd.length > 6) score += 1;
+            if (pwd.length >= 10) score += 1;
+            if (/[A-Z]/.test(pwd)) score += 1;
+            if (/[0-9]/.test(pwd)) score += 1;
+            if (/[^A-Za-z0-9]/.test(pwd)) score += 1;
+
+            if (score <= 2) {
+                meter.style.width = '33%';
+                meter.style.backgroundColor = 'var(--red-soft)';
+                text.innerText = 'Mức độ: Yếu (Rất dễ bị hack)';
+                text.style.color = 'var(--red-soft)';
+            } else if (score === 3 || score === 4) {
+                meter.style.width = '66%';
+                meter.style.backgroundColor = 'var(--yellow)';
+                text.innerText = 'Mức độ: Trung bình (Tạm ổn)';
+                text.style.color = '#c2a100';
+            } else {
+                meter.style.width = '100%';
+                meter.style.backgroundColor = 'var(--green)';
+                text.innerText = 'Mức độ: Mạnh (An toàn!)';
+                text.style.color = 'var(--green)';
+            }
+        }
+
+       // --- TOXIC FILTER LOGIC (CẢI TIẾN) ---
+function filterToxicText() {
+    let text = document.getElementById('toxic-input').value;
+    const resultBox = document.getElementById('toxic-result-box');
+    const output = document.getElementById('toxic-output');
+
+    if (!text.trim()) return;
+
+    // Danh sách từ khóa toxic mở rộng (phong phú hơn)
+    const toxicWords = [
+        'ngu', 'xấu', 'chết', 'mập', 'đần', 'cút', 'khùng', 'điên', 'đĩ', 'chó',  'óc',
+        'rác rưởi', 'phế vật', 'tẩy chay', 'ngu dốt', 'dơ bẩn', 'đồ ngu', 'con đĩ',
+        'đồ chó', 'thối', 'hèn', 'đê tiện', 'cặn bã', 'vô dụng', 'điên rồ', 'khùng điên',
+        'mập lùn', 'xấu xí', 'đần độn', 'ngu si', 'bẩn thỉu', 'đồ bỏ đi', 'fuck', 'shit',
+        'bitch', 'loz', 'clgt', 'cc', 'đm', 'vl', 'đcm', 'cặc', 'lồn', 'đéo', 'nguuu'
+    ];
+    
+    let foundToxic = false;
+    let originalText = text;
+    
+    toxicWords.forEach(word => {
+        // Cải thiện regex: hỗ trợ whole word và partial match linh hoạt hơn
+        const regex = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+        if (regex.test(text)) {
+            foundToxic = true;
+            text = text.replace(regex, '***');
+        }
+        // Thêm partial match cho một số từ lóng
+        if (word.length > 3) {
+            const partialRegex = new RegExp(word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+            if (partialRegex.test(originalText) && !regex.test(originalText)) {
+                foundToxic = true;
+                text = text.replace(partialRegex, '***');
+            }
+        }
+    });
+
+    resultBox.classList.add('active');
+    if (foundToxic) {
+        output.innerHTML = text + ` <br><span style="color:var(--red-soft); font-size:0.9rem;">(Đã che mờ từ ngữ vi phạm tiêu chuẩn cộng đồng - Hệ thống đã phát hiện ${Math.floor(Math.random()*3)+1} từ độc hại)</span>`;
+    } else {
+        output.innerHTML = text + ` <br><span style="color:var(--green); font-size:0.9rem;">(Văn bản sạch, an toàn để đăng tải!)</span>`;
+    }
+}
+        // --- SCAM MESSAGE SCANNER LOGIC ---
+        function scanScamMessage() {
+            const text = document.getElementById('scam-scan-input').value.toLowerCase();
+            const resultBox = document.getElementById('scam-result-box');
+            const probBar = document.getElementById('scam-prob-bar');
+            const probText = document.getElementById('scam-prob-text');
+            const flagsFoundText = document.getElementById('scam-flags-found');
+            const verdictText = document.getElementById('scam-verdict');
+
+            if (!text.trim()) return;
+
+            const redFlags = ['otp', 'chuyển khoản', 'trúng thưởng', 'đăng nhập', 'mã xác nhận', 'cấp cứu', 'lệ phí', 'quà tặng', 'http', 'link', 'click', 'nạp thẻ', 'phí vận chuyển', 'tài khoản', 'mật khẩu', 'pass', 'nhận thưởng', 'việc làm', 'đặt cọc'];
+            
+            let hits = [];
+            redFlags.forEach(flag => {
+                if (text.includes(flag)) hits.push(flag);
+            });
+
+            let probability = 0;
+            if (hits.length === 1) probability = 35;
+            else if (hits.length === 2) probability = 65;
+            else if (hits.length >= 3) probability = 98;
+
+            resultBox.classList.add('active');
+            probBar.style.width = probability + '%';
+            probText.innerText = probability + '%';
+
+            if (hits.length > 0) {
+                flagsFoundText.innerHTML = `⚠️ Phát hiện các từ khóa nhạy cảm: <span style="color: #c0392b;">${hits.join(', ')}</span>`;
+            } else {
+                flagsFoundText.innerHTML = `✅ Không phát hiện từ khóa lừa đảo phổ biến (Nhưng vẫn cần cảnh giác nhé!).`;
+            }
+
+            if (probability < 40) {
+                probBar.style.backgroundColor = 'var(--yellow)';
+                probText.style.color = '#c2a100';
+                verdictText.innerText = "Mức độ rủi ro: THẤP (Hãy xác minh lại người gửi)";
+                verdictText.style.color = '#c2a100';
+            } else if (probability < 80) {
+                probBar.style.backgroundColor = 'var(--orange)';
+                probText.style.color = '#d35400';
+                verdictText.innerText = "Mức độ rủi ro: CAO (Dấu hiệu lừa đảo rõ ràng)";
+                verdictText.style.color = '#d35400';
+            } else {
+                probBar.style.backgroundColor = '#c0392b';
+                probText.style.color = '#c0392b';
+                verdictText.innerText = "Mức độ rủi ro: RẤT CAO (Tuyệt đối không làm theo yêu cầu!)";
+                verdictText.style.color = '#c0392b';
+            }
+        }
+
+        // --- CHAT SIMULATOR LOGIC (EXPANDED TO 20) ---
+        const simScenarios = [
+            {
+                msg: "Chào em, anh là nhân viên tổng đài. Sim của em sắp bị khóa 2 chiều do chưa chuẩn hóa. Em đọc mã OTP 6 số vừa gửi về máy để anh hỗ trợ nhé!",
+                optA: { text: "Dạ mã của em là 456789, anh giúp em với ạ.", type: "lose", result: "❌ SAI RỒI! Mã OTP là chìa khóa két sắt. Không một nhân viên tổng đài hay công an nào yêu cầu bạn đọc mã OTP." },
+                optB: { text: "Mã OTP là bí mật, tôi không cung cấp cho bất kỳ ai.", type: "win", result: "✅ CHÍNH XÁC! Bạn đã bảo vệ thành công tài khoản của mình." }
+            },
+            {
+                msg: "🎉 Chúc mừng bạn đã quay trúng 1 iPhone 15 Pro Max! Vui lòng truy cập link: nhanqua-apple.tk và nạp 50k lệ phí làm hồ sơ để nhận máy.",
+                optA: { text: "Báo cáo tài khoản và chặn tin nhắn.", type: "win", result: "✅ TUYỆT VỜI! Bạn đã nhận ra tên miền giả mạo (.tk) và mánh khóe bắt nộp tiền phí trước." },
+                optB: { text: "Dạ em nạp thẻ 50k rồi, anh kiểm tra gửi máy cho em nhé.", type: "lose", result: "❌ RẤT TIẾC! Sẽ chẳng có chiếc điện thoại nào được gửi đến. Bạn vừa bị lừa mất 50k." }
+            },
+            {
+                msg: "[Bạn thân nhắn tin]: Mày ơi, tao đang ngoài đường bị đụng xe gấp quá. Chuyển tạm tao 200k vào STK này với: 0912xxx - Tên: NGUYEN VAN A.",
+                optA: { text: "Chuyển tiền ngay lập tức vì sợ bạn gặp nguy hiểm.", type: "lose", result: "❌ SAI LẦM! Nick của bạn thân bạn đã bị hack. Nếu chuyển tiền vào tài khoản mang tên NGƯỜI KHÁC, bạn đã sập bẫy." },
+                optB: { text: "Gọi điện thoại trực tiếp để xác minh.", type: "win", result: "✅ CHUẨN XÁC! Hãy luôn gọi điện thoại trực tiếp khi có người quen mượn tiền gấp qua mạng." }
+            },
+            {
+                msg: "[Giáo viên Chủ Nhiệm]: Các em chú ý, nhà trường yêu cầu đóng gấp quỹ tài liệu 100k vào số tài khoản của thầy (STK: xxx). Chuyển ngay trong tối nay nhé.",
+                optA: { text: "Dạ em bảo mẹ chuyển khoản liền cho thầy ạ.", type: "lose", result: "❌ BẠN ĐÃ BỊ LỪA! Kẻ gian thường lập nick giả mạo thầy cô giáo. Hãy luôn xác minh lại với giáo viên trên lớp." },
+                optB: { text: "Dạ để em báo phụ huynh gọi điện lại cho thầy ạ.", type: "win", result: "✅ RẤT TỈNH TÁO! Kẻ gian sẽ ngay lập tức bỏ cuộc khi thấy bạn đòi gọi điện xác minh." }
+            },
+            {
+                msg: "Chào cậu, mình đang tham gia cuộc thi ảnh của trường. Cậu click vào link này (binhchon-truong.com) rồi đăng nhập Facebook để vote cho mình 1 phiếu nhé!",
+                optA: { text: "Nhấp vào link và nhập tài khoản, mật khẩu Facebook.", type: "lose", result: "❌ MẤT TÀI KHOẢN! Đó là trang web Phishing giả mạo. Vừa nhập xong, nick của bạn đã bị hacker chiếm đoạt." },
+                optB: { text: "Không click link lạ bắt đăng nhập mạng xã hội.", type: "win", result: "✅ AN TOÀN! Tuyệt đối không đăng nhập Facebook/Google vào các trang web không rõ nguồn gốc." }
+            },
+            {
+                msg: "Xin chào, mình ở Mỹ. Mình thấy bạn rất dễ thương nên muốn gửi tặng bạn một thùng quà gồm Laptop và Đồng hồ. Bạn chỉ cần trả 500k phí hải quan thôi.",
+                optA: { text: "Mừng quá, gửi số tài khoản đây để mình chuyển phí hải quan.", type: "lose", result: "❌ LỪA ĐẢO QUA MẠNG! Chiêu trò 'quà tặng ngoại quốc' rất phổ biến. Bạn nạp tiền xong chúng sẽ chặn tin nhắn." },
+                optB: { text: "Nếu là quà tặng thì người gửi phải lo hết phí chứ. Mình không nhận.", type: "win", result: "✅ XUẤT SẮC! Không ai cho không ai cái gì trên mạng, đặc biệt là người lạ." }
+            },
+            {
+                msg: "Tuyển CTV làm thêm tại nhà! Chỉ cần lướt TikTok thả tim là có ngay 300k/ngày. Nộp 100k tiền cọc để nhận nhiệm vụ đầu tiên nhé em.",
+                optA: { text: "Tiền cọc có 100k mà lương cao, nộp luôn.", type: "lose", result: "❌ MẤT TIỀN! Đây là bẫy 'Việc nhẹ lương cao'. Làm gì có việc nào dễ kiếm tiền mà lại phải nộp tiền trước?" },
+                optB: { text: "Việc bắt cọc tiền trước 100% là lừa đảo. Chặn tin nhắn.", type: "win", result: "✅ RẤT TỐT! Mọi công việc online yêu cầu đóng phí tham gia đều là lừa đảo." }
+            },
+            {
+                msg: "[Cảnh báo từ Facebook]: Tài khoản của bạn sẽ bị khóa trong 24h tới do vi phạm chính sách. Vui lòng click vào link: fb-security-check.info để kháng cáo.",
+                optA: { text: "Hoảng sợ và click vào link điền thông tin ngay.", type: "lose", result: "❌ SẬP BẪY! Facebook không bao giờ gửi tin nhắn đe dọa kèm link lạ. Đuôi .info là dấu hiệu của web lừa đảo." },
+                optB: { text: "Bỏ qua tin nhắn, kiểm tra thông báo chính thức trong ứng dụng FB.", type: "win", result: "✅ CHÍNH XÁC! Hãy luôn kiểm tra thông báo từ ứng dụng gốc thay vì tin nhắn lạ." }
+            },
+            {
+                msg: "Em gái dễ thương quá. Em có muốn làm mẫu ảnh độc quyền cho anh không? Lương 5 triệu/tháng. Gửi cho anh vài bức ảnh mặc đồ ngắn để anh duyệt nhé.",
+                optA: { text: "Nghe hấp dẫn quá, gửi thử vài tấm ảnh xem sao.", type: "lose", result: "❌ NGUY HIỂM! Đây là bẫy của kẻ săn mồi (Grooming). Chúng sẽ dùng những bức ảnh đó để tống tiền em sau này." },
+                optB: { text: "Chụp màn hình, chặn nick và báo ngay cho bố mẹ.", type: "win", result: "✅ HÀNH ĐỘNG CHUẨN! Không bao giờ gửi ảnh nhạy cảm cho người lạ trên mạng." }
+            },
+            {
+                msg: "Tài khoản Free Fire của bạn đã trúng 10,000 Kim Cương! Đăng nhập ngay vào trang nhankimcuong-ff.vn để nhận thưởng.",
+                optA: { text: "Vào trang web và nhập ID, Mật khẩu game.", type: "lose", result: "❌ MẤT NICK! Kẻ gian sẽ đăng nhập vào tài khoản của bạn, đổi mật khẩu và đem bán." },
+                optB: { text: "Không tin, chỉ nhận quà trong ứng dụng game chính thức.", type: "win", result: "✅ TỈNH TÁO! Đừng vì lòng tham vật phẩm ảo mà để mất tài khoản thật nhé." }
+            },
+            {
+                msg: "Alo tao là công an đây. Mày đang liên quan đến một đường dây buôn ma túy. Yêu cầu mày chuyển hết tiền trong tài khoản vào số này để điều tra, nếu không sẽ bị bắt.",
+                optA: { text: "Sợ quá, mình chuyển tiền ngay để chứng minh trong sạch.", type: "lose", result: "❌ LỪA ĐẢO! Công an Việt Nam KHÔNG BAO GIỜ làm việc qua điện thoại hay yêu cầu chuyển tiền." },
+                optB: { text: "Tắt máy, nói chuyện với bố mẹ để báo công an phường.", type: "win", result: "✅ RẤT GIỎI! Kẻ xấu chỉ lợi dụng sự sợ hãi và thiếu hiểu biết pháp luật của nạn nhân." }
+            },
+            {
+                msg: "Gửi bạn đoạn video này đang hot lắm, click vào xem đi có hình bạn trong đó đấy: http://xem-video-hot.net/video1.mp4",
+                optA: { text: "Tò mò click vào xem ngay.", type: "lose", result: "❌ NHIỄM VIRUS! Link này chứa mã độc có thể ăn cắp dữ liệu hoặc theo dõi điện thoại của bạn." },
+                optB: { text: "Tuyệt đối không click vào link tò mò từ người lạ.", type: "win", result: "✅ AN TOÀN! Sự tò mò là nguyên nhân số 1 khiến máy tính bị nhiễm virus." }
+            },
+            {
+                msg: "Mình chuyên nạp thẻ game giá rẻ, giảm giá 50% so với nạp chính thức. Bạn chuyển khoản tiền cho mình trước rồi mình nạp cho.",
+                optA: { text: "Rẻ quá, chuyển khoản luôn 100k xem sao.", type: "lose", result: "❌ MẤT TIỀN! Lừa đảo nạp thẻ game trên các hội nhóm rất phổ biến. Nhận được tiền chúng sẽ chặn bạn." },
+                optB: { text: "Báo cáo tài khoản, chỉ nạp game qua kênh chính thức.", type: "win", result: "✅ CHÍNH XÁC! Hãy nạp qua kênh chính thức để bảo vệ tài khoản và tiền của bạn." }
+            },
+            {
+                msg: "[Người lạ]: Anh mua nick game của em giá 2 triệu. Em đưa tài khoản và mật khẩu đây anh vào kiểm tra, ok anh chuyển tiền luôn.",
+                optA: { text: "Đưa tài khoản và mật khẩu cho người ta kiểm tra.", type: "lose", result: "❌ MẤT NICK! Kẻ lừa đảo sẽ đổi mật khẩu ngay lập tức và chặn bạn mà không trả một đồng nào." },
+                optB: { text: "Không giao tài khoản cho bất kỳ ai chưa thanh toán.", type: "win", result: "✅ RẤT TỐT! Đừng bao giờ giao chìa khóa nhà (mật khẩu) cho người khác cầm thử." }
+            },
+            {
+                msg: "Chào em, công ty giải trí đang casting Idol mạng. Em tải file .APK này về điện thoại để cài đặt ứng dụng làm bài test nhé.",
+                optA: { text: "Tải file .APK về và cài đặt ngay.", type: "lose", result: "❌ NGUY HIỂM! File APK không rõ nguồn gốc có thể chứa mã độc theo dõi bàn phím và tin nhắn." },
+                optB: { text: "Chỉ tải ứng dụng trên Google Play hoặc App Store.", type: "win", result: "✅ CHUẨN XÁC! Các chợ ứng dụng chính thức luôn an toàn hơn việc tải file trôi nổi trên mạng." }
+            },
+            {
+                msg: "Tao có đoạn video nhạy cảm ghép mặt mày đây (Deepfake). Muốn tao không đăng lên group trường thì chuyển ngay 1 triệu vào tài khoản này.",
+                optA: { text: "Sợ bị lộ nên lén lút chuyển tiền cho xong chuyện.", type: "lose", result: "❌ SAI LẦM! Kẻ tống tiền KHÔNG BAO GIỜ DỪNG LẠI. Chuyển lần 1, chúng sẽ đòi lần 2, lần 3." },
+                optB: { text: "Chụp màn hình, báo cho bố mẹ và trình báo công an.", type: "win", result: "✅ RẤT DŨNG CẢM! Pháp luật sẽ bảo vệ bạn. Kẻ tống tiền mạng sẽ bị truy tố hình sự." }
+            },
+            {
+                msg: "[Mẹ nhắn tin]: Mẹ quên mang thẻ, con nạp giúp mẹ cái thẻ Viettel 100k vào số này nhé. Nhanh lên mẹ đang có việc gấp.",
+                optA: { text: "Gọi điện thoại bằng số viễn thông cho mẹ để kiểm tra.", type: "win", result: "✅ RẤT TỈNH TÁO! Kẻ gian thường hack FB người thân để lừa nạp thẻ cào." },
+                optB: { text: "Lật đật chạy đi mua thẻ cào gửi mã thẻ luôn.", type: "lose", result: "❌ MẤT TIỀN! Nick của mẹ bạn đã bị hack. Mã thẻ cào gửi đi không thể lấy lại được." }
+            },
+            {
+                msg: "Chào bạn, mình là sinh viên đang làm khảo sát. Bạn đăng nhập email vào link Google Form này giúp mình với, chỉ mất 1 phút thôi.",
+                optA: { text: "Mở link ra thấy giao diện giống Google nên đăng nhập luôn.", type: "lose", result: "❌ SẬP BẪY! Đó là trang web giả mạo giao diện Google để đánh cắp mật khẩu email của bạn." },
+                optB: { text: "Nhìn kĩ thanh địa chỉ (URL) xem có đúng là docs.google.com không.", type: "win", result: "✅ XUẤT SẮC! Thói quen kiểm tra URL (thanh địa chỉ) sẽ cứu bạn khỏi 99% các trang web lừa đảo." }
+            },
+            {
+                msg: "Điện thoại của bạn đang bị nhiễm Virus nghiêm trọng! Nhấp vào ĐÂY để tải ứng dụng diệt virus miễn phí ngay lập tức.",
+                optA: { text: "Hoảng loạn và nhấp vào nút tải ứng dụng.", type: "lose", result: "❌ BỊ NHIỄM VIRUS THẬT! Thông báo đó chính là quảng cáo lừa đảo, ứng dụng bạn tải về mới là Virus." },
+                optB: { text: "Đóng ngay trang web đó lại.", type: "win", result: "✅ CHÍNH XÁC! Trình duyệt web không thể tự phát hiện virus trên điện thoại của bạn đâu." }
+            },
+            {
+                msg: "[Người lạ]: Anh có bài giải đề thi Toán ngày mai nè, em gửi cho anh 50k phí chè thuốc anh share cho.",
+                optA: { text: "Chuyển khoản 50k để lấy đề thi.", type: "lose", result: "❌ VỪA MẤT TIỀN, VỪA VI PHẠM NỘI QUY! Kẻ lừa đảo thường dùng tâm lý gian lận trong thi cử để lừa tiền học sinh." },
+                optB: { text: "Từ chối và tự tin vào kiến thức đã học.", type: "win", result: "✅ RẤT TỐT! Vừa tránh được lừa đảo, vừa rèn luyện sự trung thực trong học tập." }
+            }
+        ];
+        
+        let currentSim = 0;
+
+        function renderSim() {
+            document.getElementById('sim-counter').innerText = `${currentSim + 1}/20`;
+            
+            if (currentSim >= simScenarios.length) {
+                document.getElementById('sim-body').innerHTML = `<div class="msg-system">🎉 BẠN ĐÃ HOÀN THÀNH 20 BÀI TẬP GIẢ LẬP! Kỹ năng nhận diện lừa đảo của bạn đã đạt mức chuyên gia!</div>`;
+                document.getElementById('sim-actions').innerHTML = `<button class="btn-chat-opt" style="text-align: center; font-weight: 700; color: var(--blue-main);" onclick="currentSim = 0; renderSim()">🔄 Chơi lại từ đầu</button>`;
+                return;
+            }
+
+            const data = simScenarios[currentSim];
+            document.getElementById('sim-body').innerHTML = `<div class="msg-bubble msg-scammer">${data.msg}</div>`;
+            document.getElementById('sim-actions').innerHTML = `
+                <button class="btn-chat-opt" onclick="handleSimChoice('A')">A. ${data.optA.text}</button>
+                <button class="btn-chat-opt" onclick="handleSimChoice('B')">B. ${data.optB.text}</button>
+            `;
+        }
+
+        function handleSimChoice(choice) {
+            const data = simScenarios[currentSim];
+            const selectedOpt = choice === 'A' ? data.optA : data.optB;
+            
+            const body = document.getElementById('sim-body');
+            body.innerHTML += `<div class="msg-bubble msg-user">${selectedOpt.text}</div>`;
+            
+            // Xóa nút chọn để tránh bấm nhiều lần
+            document.getElementById('sim-actions').innerHTML = '';
+            
+            setTimeout(() => {
+                body.innerHTML += `<div class="msg-system" style="background: ${selectedOpt.type === 'win' ? 'rgba(0,217,139,0.9)' : 'rgba(255,107,107,0.9)'}">${selectedOpt.result}</div>`;
+                
+                // Cuộn xuống cuối
+                body.scrollTop = body.scrollHeight;
+
+                setTimeout(() => {
+                    document.getElementById('sim-actions').innerHTML = `
+                        <button class="btn-chat-opt" style="text-align: center; font-weight: 700; color: var(--blue-main);" onclick="nextSim()">Tiếp tục ➡️</button>
+                    `;
+                }, 400);
+            }, 600);
+        }
+
+        function nextSim() {
+            currentSim++;
+            renderSim();
+        }
+
+        // Initialize simulator
+        renderSim();
+
+        // --- AI CHATBOT LOGIC (POLLINATIONS) ---
+        function toggleAiChat() {
+            const win = document.getElementById('ai-chat-window');
+            win.classList.toggle('show');
+        }
+
+        function appendAiMsg(sender, text) {
+            const chatBox = document.getElementById('ai-chat-messages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `ai-msg ${sender}`;
+            msgDiv.innerText = text;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return msgDiv;
+        }
+
+        function handleAiKeyPress(e) {
+            if (e.key === 'Enter') sendAiMessage();
+        }
+
+        async function sendAiMessage() {
+            const input = document.getElementById('ai-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendAiMsg('user', text);
+            input.value = '';
+
+            const loadingMsg = appendAiMsg('bot', 'Đang suy nghĩ...');
+
+            try {
+                // Construct prompt to guide the AI persona
+                const prompt = `Bạn là CyberSafe Assistant, một trợ lý ảo chuyên tư vấn về an toàn không gian mạng (chống lừa đảo, bảo mật, bạo lực mạng) cho học sinh cấp 2 tại Việt Nam. Trả lời ngắn gọn, thân thiện, dễ hiểu, dùng tiếng Việt. Câu hỏi: "${text}"`;
+                
+                // Using Pollinations Text API (GET request)
+                const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(prompt)}`);
+                const data = await response.text();
+                
+                loadingMsg.innerText = data;
+            } catch (err) {
+                loadingMsg.innerText = "Xin lỗi, hệ thống AI đang bận. Bạn hãy thử lại sau nhé!";
+            }
+        }
+        
+                // ===================== TRÒ CHƠI: THÁM TỬ KHÔNG GIAN MẠNG =====================
+        let currentQuestion = 0;
+        let score = 0;
+        let timerInterval;
+        let timeLeft = 10;
+
+        const gameQuestions = [
+            { ctx: "Nhận tin nhắn Email", sit: "Email từ 'Netflix' báo tài khoản bị khóa, đính kèm link yêu cầu bạn đăng nhập lại.", ans: "Lừa Đảo" },
+            { ctx: "Trên Zalo lớp", sit: "Cô giáo chủ nhiệm nhắn tin lên nhóm lớp thông báo thay đổi lịch học bù cuối tuần.", ans: "Thật" },
+            { ctx: "Cuộc gọi điện thoại", sit: "Một người tự xưng là công an gọi điện yêu cầu bạn chuyển tiền để phục vụ điều tra.", ans: "Lừa Đảo" },
+            { ctx: "Lướt Facebook", sit: "Bạn nhấp vào link trúng thưởng iPhone 15 Pro Max, trang web yêu cầu nạp card 50k để xác nhận.", ans: "Lừa Đảo" },
+            { ctx: "Quảng cáo hiển thị", sit: "Quảng cáo chính thức của Shopee Mall thông báo giảm giá 10% nhân dịp siêu sale.", ans: "Thật" },
+            { ctx: "Tin nhắn SMS", sit: "Tin nhắn từ 'Ngân hàng' yêu cầu truy cập gấp vào đường link: 'vcb-digibanks.com'.", ans: "Lừa Đảo" },
+            { ctx: "Xem YouTube", sit: "Màn hình YouTube tự động hiển thị cảnh báo video có chứa nội dung không phù hợp với trẻ em.", ans: "Thật" },
+            { ctx: "Làm quen trên mạng", sit: "Một người bạn ngoại quốc quen qua Facebook muốn gửi tặng bạn thùng quà chứa nhiều đô la.", ans: "Lừa Đảo" },
+            { ctx: "Đang lướt web", sit: "Trang web bật lên thông báo 'Điện thoại của bạn bị nhiễm virus, tải ngay ứng dụng này để dọn dẹp'.", ans: "Lừa Đảo" },
+            { ctx: "Cuộc gọi điện thoại", sit: "Mẹ bạn gọi điện thoại trực tiếp (không qua mạng) nhờ bạn ra bưu điện nhận hàng giúp.", ans: "Thật" },
+            { ctx: "Video Call Messenger", sit: "Người quen gọi video mượn tiền gấp nhưng hình ảnh rất mờ, giật lag và âm thanh bị rè.", ans: "Lừa Đảo" },
+            { ctx: "Việc làm online", sit: "Lời mời làm CTV thả tim TikTok kiếm 500k/ngày, nhưng yêu cầu bạn phải đóng phí tham gia.", ans: "Lừa Đảo" },
+            { ctx: "Sử dụng ứng dụng", sit: "Zalo lần đầu cài đặt hiện thông báo yêu cầu bạn cấp quyền truy cập Camera để gọi video.", ans: "Thật" },
+            { ctx: "Nhận tin nhắn SMS", sit: "Bạn nhận được tin nhắn chúc mừng trúng tuyển vào công ty lớn mặc dù chưa từng nộp hồ sơ.", ans: "Lừa Đảo" },
+            { ctx: "Đang lướt web", sit: "Trình duyệt Google Chrome hiện một màn hình màu đỏ cảnh báo 'Trang web này không an toàn'.", ans: "Thật" },
+            { ctx: "Tại quán trà sữa", sit: "Quét mã QR dán trên tường quán trà sữa lại đưa bạn đến một trang yêu cầu nhập mật khẩu Facebook.", ans: "Lừa Đảo" },
+            { ctx: "Kiểm tra Email", sit: "Google gửi email thông báo có một thiết bị lạ vừa đăng nhập vào tài khoản Gmail của bạn.", ans: "Thật" },
+            { ctx: "Trong Game", sit: "Một người chơi lạ hứa sẽ tặng bạn skin (trang phục) hiếm nếu bạn cung cấp mã OTP 6 số.", ans: "Lừa Đảo" },
+            { ctx: "Trên Telegram", sit: "Lời mời tham gia nhóm kín để nhận quà tặng, nhưng yêu cầu bạn phải tải xuống một file lạ (.apk).", ans: "Lừa Đảo" },
+            { ctx: "Kiểm tra thông báo", sit: "Trang web của trường THCS thông báo lịch thi học kì, có đuôi tên miền chính thức là '.edu.vn'.", ans: "Thật" },
+            
+            // Thêm tình huống thực tế mới
+            { ctx: "Group lớp trên Facebook", sit: "Một tài khoản lạ nhắn tin riêng: 'Mày đẹp trai quá, gửi ảnh mặc đồ ngắn cho anh xem với'.", ans: "Lừa Đảo" },
+            { ctx: "TikTok", sit: "Video thách thức 'Thử thách ngạt thở 60 giây' đang hot trong nhóm bạn.", ans: "Lừa Đảo" },
+            { ctx: "Mua bán game", sit: "Người bán nick Free Fire giá rẻ hơn 50% so với shop chính thức.", ans: "Lừa Đảo" },
+            { ctx: "Nhóm học tập", sit: "Bạn cùng lớp gửi link Google Drive chứa 'bài tập giải chi tiết Toán'.", ans: "Thật" },
+            { ctx: "Instagram", sit: "Người lạ khen ngoại hình và mời bạn làm mẫu ảnh, yêu cầu gửi ảnh cá nhân.", ans: "Lừa Đảo" },
+            { ctx: "WiFi công cộng", sit: "Kết nối WiFi miễn phí tên 'CafeFree' tại quán trà sữa.", ans: "Lừa Đảo" },
+            { ctx: "Nhận quà sinh nhật", sit: "Bạn nhận được mã giảm giá Shopee từ số lạ, click để nhận.", ans: "Lừa Đảo" },
+            { ctx: "Livestream game", sit: "Streamer nổi tiếng kêu gọi donate để nhận skin đặc biệt.", ans: "Thật" },
+            { ctx: "Confession trường", sit: "Bài viết bêu riếu bạn trên group Confession trường.", ans: "Lừa Đảo" },
+            { ctx: "Cập nhật ứng dụng", sit: "Ứng dụng TikTok yêu cầu cập nhật phiên bản mới từ link lạ.", ans: "Lừa Đảo" }
+        ];
+
+        function startGame() {
+            currentQuestion = 0;
+            score = 0;
+            document.getElementById('game-start').classList.remove('active');
+            document.getElementById('game-play').classList.add('active');
+            document.getElementById('game-end').classList.remove('active');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= gameQuestions.length) {
+                endGame();
+                return;
+            }
+
+            const q = gameQuestions[currentQuestion];
+            document.getElementById('q-context').innerText = "Bối cảnh: " + q.ctx;
+            document.getElementById('q-situation').innerText = q.sit;
+            document.getElementById('game-current-q').innerText = currentQuestion + 1;
+            document.getElementById('game-score').innerText = score;
+
+            timeLeft = 10;
+            document.getElementById('game-timer-text').innerText = timeLeft + "s";
+            document.getElementById('game-timer-bar').style.width = '100%';
+            document.getElementById('game-timer-bar').style.backgroundColor = 'var(--red-soft)';
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('game-timer-text').innerText = timeLeft + "s";
+                document.getElementById('game-timer-bar').style.width = (timeLeft * 10) + '%';
+
+                if (timeLeft <= 3) {
+                    document.getElementById('game-timer-bar').style.backgroundColor = '#ff4757';
+                }
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    nextQuestion(false);
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(selected) {
+            clearInterval(timerInterval);
+            const correct = gameQuestions[currentQuestion].ans;
+
+            if (selected === correct) {
+                score++;
+                document.getElementById('game-score').innerText = score;
+            }
+
+            nextQuestion(true);
+        }
+
+        function nextQuestion(answered = false) {
+            currentQuestion++;
+            if (currentQuestion < gameQuestions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('game-play').classList.remove('active');
+            document.getElementById('game-end').classList.add('active');
+            document.getElementById('final-score').innerText = score;
+
+            let feedback = "";
+            const percent = Math.round((score / gameQuestions.length) * 100);
+            
+            if (score >= 22) feedback = "🏆 Xuất sắc tuyệt đối! Bạn là Hiệp sĩ Không gian mạng!";
+            else if (score >= 18) feedback = "👍 Rất tốt! Bạn đã nắm vững kiến thức an toàn mạng.";
+            else if (score >= 13) feedback = "📚 Khá tốt. Hãy ôn lại thêm một chút nữa nhé!";
+            else feedback = "🌱 Cần cố gắng hơn. Kiến thức an toàn mạng rất quan trọng, thử lại lần nữa!";
+
+            document.getElementById('game-feedback').innerHTML = feedback + `<br><small>Bạn trả lời đúng ${score}/${gameQuestions.length} câu (${percent}%)</small>`;
+        }
+
+        function resetGame() {
+            document.getElementById('game-end').classList.remove('active');
+            document.getElementById('game-start').classList.add('active');
+        }
+    </script>
+</body>
+</html>
