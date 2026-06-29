@@ -1230,7 +1230,8 @@
 
             document.getElementById(pageId).classList.add('active');
             
-            const activeNav = Array.from(navLinks).find(link => link.getAttribute('onclick').includes(pageId));
+            // Dán đè đoạn này lên dòng code cũ
+const activeNav = Array.from(navLinks).find(link => link.getAttribute('onclick')?.includes(pageId));
             if(activeNav) activeNav.classList.add('active-link');
 
             // Update progress dots
