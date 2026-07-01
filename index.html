@@ -113,7 +113,9 @@
         /* ===== HERO ===== */
         header {
             padding: 7rem 2rem 5rem; text-align: center;
-            background: linear-gradient(160deg, var(--blue-deep) 0%, #1a3ecf 50%, #2f6bff 100%);
+            background-image: url("Gemini_Generated_Image_z0uoyvz0uoyvz0uo.png");
+            background-size: cover;
+            background-position: center;
             position: relative; overflow: hidden;
             min-height: calc(100vh - 68px); 
             display: flex; flex-direction: column; justify-content: center;
@@ -1218,6 +1220,7 @@
     </footer>
 
     <script>
+        
         let popupTimer;
         let isSurveyDone = false;
 
@@ -1256,6 +1259,15 @@ const activeNav = Array.from(navLinks).find(link => link.getAttribute('onclick')
         }
 
         switchPage('home');
+        window.addEventListener('load', function() {
+        const hash = window.location.hash; // Lấy phần sau dấu #, ví dụ: #lua-dao
+        if (hash) {
+            // Cắt bỏ dấu # để lấy tên tab, ví dụ: "lua-dao"
+            const pageId = hash.substring(1); 
+            // Gọi hàm switchPage của bạn để mở tab đó
+            switchPage(pageId);
+        }
+    });
 
         // --- SCROLL POPUP ---
         let popupTriggered = false;
